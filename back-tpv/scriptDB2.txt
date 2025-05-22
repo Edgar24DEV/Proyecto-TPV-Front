@@ -1,0 +1,113 @@
+-- Insertar en empresas
+INSERT INTO empresas (id, nombre, direccion_fiscal, CIF, razon_social, telefono, correo, contrasenya, created_at, updated_at)
+VALUES 
+(2, 'Restaurante La Esquina', 'Avenida Siempre Viva 742', 'B98765432', 'La Esquina S.L.', '601234567', 'contacto@laesquina.com', 'clave456', NOW(), NOW()),
+(3, 'Café Central', 'Plaza Mayor 5', 'B11223344', 'Café Central S.A.', '602345678', 'info@cafecentral.com', 'clave789', NOW(), NOW()),
+(4, 'Pizzería Napoli', 'Calle Italia 99', 'B55667788', 'Napoli Pizzas', '603456789', 'napoli@pizzas.com', 'clave101', NOW(), NOW()),
+(5, 'Hamburguesas Express', 'Carretera Nacional 22', 'B22334455', 'Express Burgers', '604567890', 'contacto@expressburgers.com', 'clave202', NOW(), NOW());
+
+-- Insertar en roles
+INSERT INTO rols (id, rol, productos, categorias, tpv, usuarios, mesas, restaurante, clientes, empresa, pago, id_empresa, created_at, updated_at)
+VALUES 
+(2, 'Cocinero', 1, 0, 0, 0, 0, 1, 0, 0, 0, 2, NOW(), NOW()),
+(3, 'Cajero', 0, 0, 1, 0, 0, 0, 1, 0, 1, 3, NOW(), NOW()),
+(4, 'Mesero', 0, 0, 0, 1, 1, 0, 1, 0, 0, 4, NOW(), NOW()),
+(5, 'Gerente', 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, NOW(), NOW());
+
+-- Insertar en empleados
+INSERT INTO empleados (id, nombre, pin, id_empresa, id_rol, created_at, updated_at)
+VALUES 
+(2, 'María López', 5678, 2, 2, NOW(), NOW()),
+(3, 'Carlos Rodríguez', 9101, 3, 3, NOW(), NOW()),
+(4, 'Lucía Fernández', 1121, 4, 4, NOW(), NOW()),
+(5, 'Pedro Sánchez', 3141, 5, 5, NOW(), NOW());
+
+-- Insertar en restaurantes
+INSERT INTO restaurantes (id, nombre, direccion, telefono, contrasenya, direccion_fiscal, CIF, razon_social, id_empresa, created_at, updated_at)
+VALUES 
+(2, 'Café Central', 'Plaza Mayor 5', '602345678', 'clave789', 'Plaza Mayor 5', 'B11223344', 'Café Central S.A.', 3, NOW(), NOW()),
+(3, 'Pizzería Napoli', 'Calle Italia 99', '603456789', 'clave101', 'Calle Italia 99', 'B55667788', 'Napoli Pizzas', 4, NOW(), NOW()),
+(4, 'Hamburguesas Express', 'Carretera Nacional 22', '604567890', 'clave202', 'Carretera Nacional 22', 'B22334455', 'Express Burgers', 5, NOW(), NOW());
+
+-- Insertar en ubicaciones (agregar 4 más)
+INSERT INTO ubicaciones (id, ubicacion, activo, id_restaurante, created_at, updated_at)
+VALUES 
+(2, 'Zona Terraza', 1, 1, NOW(), NOW()),
+(3, 'Salón VIP', 1, 2, NOW(), NOW()),
+(4, 'Barra', 1, 3, NOW(), NOW()),
+(5, 'Zona Infantil', 1, 4, NOW(), NOW());
+
+-- Insertar en mesas
+INSERT INTO mesas (id, mesa, activo, id_ubicacion, created_at, updated_at)
+VALUES 
+(3, 'Mesa 3', 1, 1, NOW(), NOW()),
+(4, 'Mesa 4', 1, 1, NOW(), NOW()),
+(5, 'Mesa 5', 1, 1, NOW(), NOW()),
+(6, 'Mesa 6', 1, 2, NOW(), NOW()),
+(7, 'Mesa 7', 1, 2, NOW(), NOW());
+
+-- Insertar en categorias (sin las categorías 1 y 2)
+INSERT INTO categorias (id, categoria, activo, id_empresa, created_at, updated_at)
+VALUES 
+(3, 'Platos principales', 1, 1, NOW(), NOW()),
+(4, 'Bebidas', 1, 1, NOW(), NOW()),
+(5, 'Pizzas', 1, 1, NOW(), NOW());
+
+-- Insertar más productos (5 en total)
+INSERT INTO productos (id, nombre, precio, imagen, activo, id_categoria, id_empresa, created_at, updated_at)
+VALUES 
+(3, 'Hamburguesa Clásica', 8.50, 'hamburguesa.jpg', 1, 1, 1, NOW(), NOW()),
+(4, 'Refresco Cola', 4.00, 'refresco.jpg', 1, 2, 1, NOW(), NOW()),
+(5, 'Pizza Margarita', 12.99, 'pizza.jpg', 1, 3, 1, NOW(), NOW());
+
+
+-- Insertar en clientes
+INSERT INTO clientes (id, razon_social, cif, direccion_fiscal, correo, id_empresa, created_at, updated_at)
+VALUES 
+(2, 'Cliente Ejemplo 2', 'C87654321', 'Calle del Cliente 789', 'cliente2@email.com', 1, NOW(), NOW()),
+(3, 'Cliente Ejemplo 3', 'C11223344', 'Calle del Cliente 101', 'cliente3@email.com', 1, NOW(), NOW()),
+(4, 'Cliente Ejemplo 4', 'C99887766', 'Calle del Cliente 202', 'cliente4@email.com', 1, NOW(), NOW());
+
+
+-- Insertar en pedidos
+INSERT INTO pedidos (id, estado, fecha_inicio, fecha_fin, comensales, id_mesa, created_at, updated_at)
+VALUES 
+(2, 'Abierto', NOW(), NOW(), 3, 3, NOW(), NOW()),
+(3, 'Cerrado', NOW(), NOW(), 2, 4, NOW(), NOW()),
+(4, 'Abierto', NOW(), NOW(), 4, 5, NOW(), NOW()),
+(5, 'Pendiente', NOW(), NOW(), 5, 6, NOW(), NOW());
+
+-- Insertar en lineas_pedido (con productos existentes)
+INSERT INTO lineas_pedido (id, id_pedido, id_producto, cantidad, precio, nombre, observaciones, estado, created_at, updated_at)
+VALUES 
+(3, 3, 3, 2, 8.50, 'Hamburguesa Clásica', 'Sin pepinillos', 'En preparación', NOW(), NOW()),
+(4, 4, 4, 1, 4.00, 'Refresco Cola', 'Sin hielo', 'Listo', NOW(), NOW()),
+(5, 5, 5, 3, 12.99, 'Pizza Margarita', 'Extra queso', 'Pendiente', NOW(), NOW());
+
+
+-- Insertar en pagos
+INSERT INTO pagos (id, tipo, cantidad, fecha, id_pedido, id_cliente, razon_social, CIF, n_factura, correo, direccion_fiscal, created_at, updated_at)
+VALUES 
+(2, 'Efectivo', 20.00, NOW(), 2, 1, 'Cliente Ejemplo', 'C12345678', 'F789101', 'cliente@email.com', 'Calle del Cliente 456', NOW(), NOW()),
+(3, 'Tarjeta', 15.50, NOW(), 3, 2, 'Empresa X', 'C87654321', 'F112131', 'empresa@email.com', 'Calle Empresa 789', NOW(), NOW());
+
+
+-- Insertar en empleado_restaurante
+INSERT INTO empleado_restaurante (id, id_empleado, id_restaurante, created_at, updated_at)
+VALUES 
+(2, 2, 1, NOW(), NOW()),
+(3, 3, 1, NOW(), NOW()),
+(4, 4, 1, NOW(), NOW());
+
+
+-- Insertar en restaurante_producto
+INSERT INTO restaurante_producto (id, activo, id_producto, id_restaurante, created_at, updated_at)
+VALUES 
+(3, 1, 3, 1, NOW(), NOW()),
+(4, 1, 4, 1, NOW(), NOW()),
+(5, 1, 5, 1, NOW(), NOW());
+
+
+UPDATE productos
+SET iva = 0.1
+where id<10;

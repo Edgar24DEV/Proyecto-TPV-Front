@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="content-wrapper">
+    <div class="login-container">
+      <form class="login-form" (ngSubmit)="loginRestaurant()" [formGroup]="loginRestaurantForm">
+        <h2 class="login-title">INICIAR SESIÓN</h2>
+        
+        <ion-item class="login-item" lines="full">
+          <ion-label class="login-label" position="floating">Nombre del Restaurante</ion-label>
+          <ion-input type="text" formControlName="nombre" required></ion-input>
+        </ion-item>
+
+        <ion-item class="login-item" lines="full">
+          <ion-label class="login-label" position="floating">Contraseña</ion-label>
+          <ion-input type="password" formControlName="contrasenya" required></ion-input>
+        </ion-item>
+
+        <ion-button 
+          type="submit" 
+          expand="block" 
+          [disabled]="!loginRestaurantForm.valid">
+          INGRESAR
+        </ion-button>
+        <ion-button (click)="volver()" expand="block" fill="outline" class="bt-volver"> VOLVER </ion-button>
+      </form>
+
+      <div *ngIf="mensajeError" class="error-message">
+        <ion-text>
+        Nombre y/o contraseña incorrectos
+      </ion-text>
+      </div>
+    </div>
+  </div>
+  
+</ion-content>
+

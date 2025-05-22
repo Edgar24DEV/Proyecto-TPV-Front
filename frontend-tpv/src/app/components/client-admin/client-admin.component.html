@@ -1,0 +1,127 @@
+<ion-content color="light" id="main-content" class="page-content-with-header-padding">
+  <div class="superior">
+    <h2>CLIENTES</h2>
+    <ion-searchbar [debounce]="500" (ionInput)="handleInput($event)"></ion-searchbar>
+    <ion-button fill="clear" class="btn-nuevo" (click)="showCreate()"
+      >Nuevo</ion-button
+    >
+  </div>
+  <div class="list-container">
+    <ion-list [inset]="true">
+
+      <ion-item *ngFor="let client of results">
+        <ion-icon class="elipse" name="ellipse"></ion-icon>
+        <ion-label>{{ client.razonSocial }}</ion-label>
+        <ion-button fill="clear" (click)="showInfo(client.id!)">
+          <ion-icon class="icon-action" name="eye"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="showEdit(client.id!)">
+          <ion-icon class="icon-action" name="create-sharp"></ion-icon>
+        </ion-button>
+      </ion-item>
+    
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-modal
+  [isOpen]="showClientModal"
+  (didDismiss)="showClientModal = false"
+>
+  <ng-template>
+    <div class="client-form">
+      <h3>Datos del cliente</h3>
+
+      <form [formGroup]="clientForm" (ngSubmit)="saveClient()">
+        <!-- Razón social -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('razonSocial')">
+          <ion-label position="floating">Razón social</ion-label>
+          <ion-input
+            formControlName="razonSocial"
+            [readonly]="isDisabled"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('razonSocial')">
+          <small *ngIf="clientForm.get('razonSocial')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+          <small *ngIf="clientForm.get('razonSocial')?.errors?.['maxlength']">
+            Máximo 255 caracteres.
+          </small>
+        </ion-text>
+
+        <!-- CIF -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('cif')">
+          <ion-label position="floating">CIF</ion-label>
+          <ion-input
+            formControlName="cif"
+            [readonly]="isDisabled"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('cif')">
+          <small *ngIf="clientForm.get('cif')?.errors?.['required']">CIF es obligatorio.</small>
+          <small *ngIf="clientForm.get('cif')?.errors?.['pattern']">CIF no es válido.</small>
+        </ion-text>
+
+        <!-- Dirección fiscal -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('direccion')">
+          <ion-label position="floating">Dirección fiscal</ion-label>
+          <ion-input
+            formControlName="direccion"
+            [readonly]="isDisabled"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('direccion')">
+          <small *ngIf="clientForm.get('direccion')?.errors?.['required']">Este campo es obligatorio.</small>
+          <small *ngIf="clientForm.get('direccion')?.errors?.['maxlength']">Máximo 255 caracteres.</small>
+        </ion-text>
+
+        <!-- Correo -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('email')">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input
+            formControlName="email"
+            type="email"
+            [readonly]="isDisabled"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('email')">
+          <small *ngIf="clientForm.get('email')?.errors?.['required']">Correo obligatorio.</small>
+          <small *ngIf="clientForm.get('email')?.errors?.['email']">Correo no válido.</small>
+          <small *ngIf="clientForm.get('email')?.errors?.['maxlength']">Máximo 255 caracteres.</small>
+        </ion-text>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save btn-form"
+            expand="block"
+            fill="solid"
+            color="primary"
+            [disabled]="clientForm.invalid"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="cancel()"
+            color="medium"
+          >
+          {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabled && !createClient"
+            expand="block"
+            fill="outline"
+            (click)="delete()"
+            color="danger"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

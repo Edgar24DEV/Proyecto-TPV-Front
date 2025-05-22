@@ -1,0 +1,270 @@
+<ion-content id="main-content" class="page-content-with-header-padding">
+  <div class="superior">
+    <h2>PRODUCTOS</h2>
+    <div class="filters-container">
+      <ion-item class="category-filter">
+        <ion-select
+          [(ngModel)]="selectedCategoryId"
+          (ionChange)="filterByCategory($event.detail.value)"
+          placeholder="Filtrar por categoría"
+          interface="popover"
+        >
+          <ion-select-option
+            *ngFor="let category of filteredCategories"
+            [value]="category.id"
+          >
+            {{ category.categoria }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-searchbar
+        [debounce]="500"
+        (ionInput)="handleInput($event)"
+        placeholder="Buscar productos..."
+      ></ion-searchbar>
+    </div>
+    <ion-button
+      fill="clear"
+      class="btn-nuevo"
+      (click)="showAsign()"
+      *ngIf="idRestaurant"
+      >Asignar</ion-button
+    >
+    <ion-button fill="clear" class="btn-nuevo" (click)="showCreate()"
+      >Nuevo</ion-button
+    >
+  </div>
+  <ion-grid>
+    <ion-row [ngClass]="{ 'center-grid': results.length < 4 }">
+      <ion-col size="auto" *ngFor="let product of results">
+        <ion-card id="present-alert" color="primary-color">
+          <img
+            alt="{{ product.nombre }}"
+            [src]="
+              product.imagen && product.imagen.trim() !== ''
+                ? 'http://localhost:80/storage/' + product.imagen
+                : defaultImage
+            "
+            width="200px"
+            height="140px"
+          />
+          <ion-card-header>
+            <ion-card-title>{{ product.nombre }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="buttons">
+              <ion-button fill="clear" (click)="showInfo(product.id!)">
+                <ion-icon
+                  [ngClass]="{
+                    active: product.activo,
+                    inactive: !product.activo
+                  }"
+                  class="icon-action"
+                  name="eye"
+                ></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" (click)="showEdit(product.id!)">
+                <ion-icon
+                  [ngClass]="{
+                    active: product.activo,
+                    inactive: !product.activo
+                  }"
+                  class="icon-action"
+                  name="create-sharp"
+                ></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-modal
+  class="custom-modal"
+  [isOpen]="showProductModal"
+  (didDismiss)="showProductModal = false"
+>
+  <ng-template>
+    <div class="employee-form">
+      <h3>{{ createProduct ? "Nuevo Producto" : "Datos del Producto" }}</h3>
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+        <div class="image-section">
+          <img
+            *ngIf="selectedImagePreview || (product?.imagen && !createProduct)"
+            [src]="
+              selectedImagePreview ||
+              'http://localhost:80/storage/' + product.imagen
+            "
+            alt="Imagen del producto"
+            class="product-image"
+          />
+          <input
+            *ngIf="!isDisabled"
+            type="file"
+            id="fileInput"
+            (change)="onFileChange($event)"
+            accept="image/*"
+            style="display: none"
+          />
+          <ion-button
+            *ngIf="!isDisabled"
+            fill="clear"
+            size="small"
+            (click)="openFileInput()"
+          >
+            <ion-icon name="image" slot="start"></ion-icon>
+            {{
+              selectedImagePreview || product.imagen
+                ? "Cambiar imagen"
+                : "Seleccionar imagen"
+            }}
+          </ion-button>
+          <ion-text color="danger" *ngIf="isInvalid('imagen')">
+            <small *ngIf="productForm.get('imagen')?.errors?.['required']">
+              Imagen obligatoria
+            </small>
+          </ion-text>
+        </div>
+        <ion-item class="form-item">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('nombre')">
+          <small *ngIf="productForm.get('nombre')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+          <small
+            *ngIf="productForm.get('nombre')?.errors?.['maxlength'] || productForm.get('nombre')?.errors?.['minlength']"
+          >
+            Mínimo 2 carácteres y máximo 100 carácteres
+          </small>
+        </ion-text>
+
+        <ion-item class="form-item">
+          <ion-select
+            formControlName="categoria"
+            [disabled]="isDisabled"
+            label="Categoría"
+            label-placement="floating"
+            placeholder="Seleccione una categoría"
+            required
+          >
+            <ion-select-option
+              *ngFor="let category of listAllCategories"
+              [value]="category.id"
+            >
+              {{ category.activo ? "🟢" : "🔴" }}{{ category.categoria }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="form-item">
+          <ion-label position="floating">Precio</ion-label>
+          <ion-input
+            type="number"
+            inputmode="decimal"
+            formControlName="precio"
+            [readonly]="isDisabled"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('precio')">
+          <small *ngIf="productForm.get('precio')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+          <small
+            *ngIf="productForm.get('precio')?.errors?.['max'] || productForm.get('precio')?.errors?.['min']"
+          >
+            Mínimo 0.01€ y máximo 9999.99€
+          </small>
+        </ion-text>
+        <ion-item class="form-item" *ngIf="!isDisabled">
+          <ion-label>Activo</ion-label>
+          <ion-toggle formControlName="activo" slot="start"></ion-toggle>
+        </ion-item>
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save"
+            expand="block"
+            fill="solid"
+            color="primary"
+            type="submit"
+            [disabled]="productForm.invalid"
+          >
+            Guardar
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            color="medium"
+            (click)="cancel()"
+          >
+            {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabled && !createProduct"
+            expand="block"
+            fill="outline"
+            color="danger"
+            (click)="deleteProduct()"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  [isOpen]="showProductRestModal"
+  (didDismiss)="showProductRestModal = false"
+>
+  <ng-template>
+    <div class="employee-form">
+      <h3>Asignar productos</h3>
+
+      <form [formGroup]="productRestForm" (ngSubmit)="saveProductRest()" 
+          *ngIf="productosCompanyNotRestaurant.length!=0">
+        <div
+          class="container-checkbox"
+          *ngFor="let product of productosCompanyNotRestaurant"
+        >
+          <ion-checkbox
+            labelPlacement="end"
+            [value]="product.id"
+            (ionChange)="onCheckboxChange($event, product.id!)"
+            >{{ product.nombre }}</ion-checkbox
+          >
+        </div>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save btn-form"
+            expand="block"
+            fill="solid"
+            color="primary"
+            [disabled]="productRestForm.invalid"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="cancel()"
+            color="medium"
+          >
+            Volver
+          </ion-button>
+        </div>
+      </form>
+      <div *ngIf="productosCompanyNotRestaurant.length==0" class="sin-productos">
+        <h4> No tiene productos para asignar</h4>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

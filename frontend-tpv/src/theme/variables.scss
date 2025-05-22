@@ -1,0 +1,33 @@
+// Variables CSS globales
+:root {
+    --ion-color-primary: #fc7f7f;
+    --ion-color-primary-rgb: 56, 128, 255;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #fc7f7f;
+    --ion-color-primary-tint: #fc7f7f;
+
+  
+    // Tus variables personalizadas
+    --primary-color: #FC5858;
+    --primary-activated: var(--ion-color-primary-shade);
+    --secondary-color: rgb(109, 13, 13);
+    --blue-color:  rgb(1, 34, 77);
+    --green-color: #95c34e;
+    --background-color: #fc7f7f;
+    --form-background: white;
+    --text-color: #fc7f7f;
+    --label-color: #666;
+    --border-color: #ddd;
+    --danger-color: var(--ion-color-danger);
+    --card-background: #F9F9F9;
+    
+    --header-font-size: 1.5rem;
+    --title-font-size: 1.8rem;
+    --text-font-size: 0.9rem;
+    --form-padding: 2rem;
+    --form-radius: 10px;
+    --button-height: 50px;
+
+    --ion-font-family: 'Roboto', sans-serif; 
+  }

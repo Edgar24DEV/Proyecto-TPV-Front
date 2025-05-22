@@ -1,0 +1,16 @@
+<ion-content>
+  <div class="content-wrapper">
+    <div class="login-container">
+      <form class="login-form">
+        <h1 class="login-title">Yurest TPV</h1>
+
+        <ion-button (click)="redirectAdministrate()" expand="block"> Administración </ion-button>
+        <ion-button (click)="redirectRestaurant()" expand="block"> Restaurante </ion-button>
+      </form>
+
+      <div *ngIf="mensajeError" class="error-message">
+        <ion-text> Nombre y/o contraseña incorrectos </ion-text>
+      </div>
+    </div>
+  </div>
+</ion-content>

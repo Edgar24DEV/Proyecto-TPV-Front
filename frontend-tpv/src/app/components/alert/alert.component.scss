@@ -1,0 +1,17 @@
+.alert-box {
+  position: fixed; /* Usa fixed para que funcione aunque haya scroll */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centra el div */
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  color: white;
+  z-index: 1000;
+  max-width: 300px;
+  text-align: center; /* Opcional: centra el texto */
+}
+.success { background-color: #4CAF50; }
+.error { background-color: #f44336; }
+.info { background-color: #2196F3; }
+.warning { background-color: #ff9800; }

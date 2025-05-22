@@ -1,0 +1,108 @@
+<ion-content id="main-content" class="page-content-with-header-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="9" class="col-izquierda">
+        <div class="zona-izquierda">
+          <ion-row class="zona-categorias">
+            <ion-col size="9" class="categories">
+              <app-categories-list
+                (categorySelected)="onCategorySelected($event)"
+              ></app-categories-list>
+            </ion-col>
+            <ion-col size="3" class="zona-comensales">
+              <ion-label class="nameTable">{{ tableName }}</ion-label>
+              <button class="btnCom" fill="clear" (click)="showGuestsModal = true">
+                Comensales
+              </button>
+            </ion-col>
+          </ion-row>
+          <div class="zona-productos">
+            <app-products-list
+              (envioProductos)="onRefresh()"
+              [categoryId]="selectedCategoryId"
+              [currentOrderId]="idPedido"
+            ></app-products-list>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="3" class="desktop-sidebar">
+        <div class="box-lateral">
+          <app-order-line-list
+            #orderList
+            [orderLines]="orderLines"
+            [setEditingLine]="setEditingLine.bind(this)"
+            [setEditingMode]="setEditingMode.bind(this)"
+            [currentInputValue]="currentInputValue"
+            [editingLine]="currentEditingLine"
+            [editingMode]="editingMode"
+            [currentOrderId]="idPedido"
+          ></app-order-line-list>
+          <div class="pay tpvboard">
+            <app-tpv-keyboard
+              (keyPressed)="onKeyPressed($event)"
+              [currentTotalInput]="currentInputValue"
+            ></app-tpv-keyboard>
+          </div>
+          <div class="pay">
+            <ion-button fill="clear" class="btPay" (click)="handlePayment()">
+              Pagar
+            </ion-button>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="panelVisible" class="mobile-order-panel" [class.active]="panelVisible" [class.keyboard-visible]="showKeyboard && isMobile">
+    <div class="panel-header" (click)="togglePanel()">
+      <span>Pedido</span>
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </div>
+    <div class="panel-content">
+      <app-order-line-list
+        [orderLines]="orderLines"
+        [setEditingLine]="setEditingLine.bind(this)"
+        [setEditingMode]="setEditingMode.bind(this)"
+        [currentInputValue]="currentInputValue"
+        [editingLine]="currentEditingLine"
+        [editingMode]="editingMode"
+        [currentOrderId]="idPedido"
+      ></app-order-line-list>
+      <div class="mobile-keyboard-container" *ngIf="showKeyboard && isMobile">
+        <app-tpv-keyboard
+          (keyPressed)="onKeyPressed($event)"
+          [currentTotalInput]="currentInputValue"
+        ></app-tpv-keyboard>
+      </div>
+      <ion-button expand="block" class="pay-button" (click)="handlePayment()">
+        Pagar
+      </ion-button>
+    </div>
+  </div>
+
+  <ion-fab *ngIf="isMobile" vertical="bottom" horizontal="end" slot="fixed" class="floating-panel-button">
+    <ion-fab-button (click)="togglePanel()">
+      <ion-icon name="cart-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-modal [isOpen]="showGuestsModal" (didDismiss)="showGuestsModal = false">
+  <ng-template>
+    <div class="custom-modal-content">
+      <h2>Número de comensales</h2>
+      <div class="guest-controls">
+        <button class="btn-control" (click)="decreaseGuests()">-</button>
+        <span class="guest-count">{{ guests }}</span>
+        <button class="btn-control" (click)="increaseGuests()">+</button>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-danger" (click)="confirmGuests()">
+          Confirmar
+        </button>
+        <button class="btn" (click)="showGuestsModal = false">Cancelar</button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

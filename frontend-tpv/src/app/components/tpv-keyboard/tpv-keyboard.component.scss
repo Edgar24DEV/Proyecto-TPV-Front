@@ -1,0 +1,46 @@
+@use "../../../theme/variables" as var;
+
+
+
+ion-grid {
+  padding: 0;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+ion-button {
+  width: 80px;
+  height: 60px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  margin: 0.1em;
+  color: white;
+  font-weight: bold;
+  background-color: var(--primary-color);
+}
+
+ion-button[color="medium"] {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 1500px) {
+  ion-button{
+    width: 70px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 1200px) {
+  ion-button{
+    width: 60px;
+    height: 45px;
+  }
+}
+@media (max-width: 1050px) {
+  ion-button{
+    width: 50px;
+    height: 40px;
+  }
+}
+
+

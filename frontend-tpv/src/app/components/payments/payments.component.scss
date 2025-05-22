@@ -1,0 +1,1039 @@
+@use "../../../theme/variables" as var;
+
+app-products-list {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+ion-grid {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+}
+
+.guest-count {
+  padding: 10px 15px;
+  height: 80px;
+  font-size: clamp(1rem, 1.5vw, 1.5rem); // Reducido
+}
+
+button {
+  background-color: white;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 1px 1px var(--primary-color);
+  font-size: clamp(0.9rem, 1.5vw, 1.8rem); // Reducido
+  border-radius: 1px;
+  padding: 20px 25px;
+  height: 70px;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    background-color: white;
+    color: var(--primary-color);
+    transform: scale(1.05);
+  }
+}
+
+// Layout principal
+.app-main {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.box-lateral {
+  flex: 1 1 200px;
+  min-width: 300px;
+  height: calc(100vh - 92px);
+  padding: 20px;
+  border-left: 1px solid var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+
+  ion-row {
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    flex: 1 1 auto;
+    padding-right:  20em; ;
+  }
+}
+
+.zona-izquierda {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+  box-sizing: border-box;
+  @media (max-width: 768px) {
+    .zona-izquierda {
+      flex: 1 1 clamp(200px, 100%, 400px);
+    }
+  }
+}
+.for-guest{
+  font-size: 18px;
+}
+.box-price{
+  display: flex;
+  flex-direction: column;
+  gap:0.7em;
+}
+
+.zona-categorias {
+  flex: 1;
+  min-height: min-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zona-productos {
+  flex: 1 1 0;
+  overflow-y: auto;
+  padding: 10px;
+  height: 100%;
+}
+
+.categories {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.btPay {
+  background-color: rgb(80, 202, 80);
+  border: 2px solid rgb(1, 65, 1);
+  color: white;
+}
+
+.btPay,
+.btBack {
+  width: 100%;
+  max-width: 300px;
+  height: 80px;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Reducido
+  border-radius: 10px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+    height: 70px;
+  }
+}
+
+ion-button {
+  box-sizing: border-box;
+  height: 60px;
+  width: fit-content;
+  font-size: clamp(1rem, 1.5vw, 1.3rem); // Reducido
+  border-radius: 10px;
+  margin: 0.1em;
+  color: white;
+  font-weight: bold;
+  background-color: var(--primary-color);
+
+  &[color="medium"] {
+    margin-top: 1.5rem;
+  }
+}
+
+app-order-line-list {
+  width: 100%;
+}
+
+.table {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1em;
+  @media (max-width: 768px) {
+    .table {
+      margin-top: -3em;
+      background-color: olive;
+      justify-content: space-between; // o space-between si preferís
+      gap: 10rem; // Ajusta el espacio entre nombre y total
+    }
+  }
+}
+
+.nameTable {
+  padding-right: 20px;
+  margin-left: 0 auto;
+  font-size: clamp(1.2rem, 4vw, 2.5rem); // Reducido
+  font-weight: 500;
+  text-align: center;
+  color: var(--secondary-color);
+}
+
+.color-rest{
+color: var(--primary-color);
+font-weight: bold;
+}
+
+.color-dev{
+  color: rgb(80, 202, 80);
+  font-weight: bold;
+}
+.pay {
+  flex: 1 1 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 2px;
+  margin-bottom: 0;
+  flex-direction: column;
+}
+.h2-pay-rest{
+  height: fit-content;
+  margin-bottom: 70px;
+  padding-bottom: 0;
+  font-size: 30px;
+  font-weight: bold;
+}
+.color-h2-rest{
+  color: var(--secondary-color);
+}
+.color-h2-dev{
+  color: rgb(48, 71, 48);
+}
+
+.tpvboard {
+  margin-top: calc(6em - 62px);
+  box-sizing: border-box;
+}
+
+// MODAL
+
+::ng-deep ion-modal {
+  --height: auto;
+  --max-height: 90%;
+  --width: auto;
+  --max-width: 400px;
+  --border-radius: 12px;
+  --box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+  --backdrop-opacity: 0.3;
+}
+
+::ng-deep ion-modal .custom-modal-content {
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 100%;
+}
+.error-message {
+  margin-top: 1.5rem;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: var(--danger-color);
+
+  span {
+    font-size: var(--text-font-size);
+    color: white;
+    font-weight: bold;
+  }
+}
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-btn{
+  padding: 10px 15px;
+  height: auto;
+  font-size: larger;
+  line-height: 1.2;
+  @media (max-width: 760px) {
+    margin: 0 auto ;
+  }
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+}
+
+.btn {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem); // Reducido
+  font-weight: bold;
+  background-color: #e0e0e0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+  }
+
+  &.btn-danger {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: #c03a4e;
+      font-weight: bold;
+    }
+  }
+
+  &.btn-control {
+    border-radius: 10px;
+  }
+}
+
+.total {
+  font-size: clamp(2rem, 4vw, 2.5rem); // Reducido un poco
+  font-weight: 800;
+}
+
+::ng-deep app-order-line-list #order-pay{
+  ion-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+
+    ion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: clamp(1rem, 2vw, 1.5rem); // Reducido
+
+      ion-input {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ion-button {
+        font-size: 0.75em;
+      }
+    }
+  }
+}
+
+.impress {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3em;
+  margin: 2em;
+
+  button {
+    width: 250px;
+    height: 100px;
+    font-size: clamp(1.2rem, 2vw, 1.6rem); // Reducido
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+}
+
+
+.payment-list-inside-order  app-order-line-list{
+  ion-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+
+    ion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: clamp(1rem, 2vw, 1.5rem); // Reducido
+
+      ion-input {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ion-button {
+        font-size: 0.75em;
+      }
+    }
+  }
+}
+
+
+.btn-pay {
+  background-color: white;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 1px 1px var(--primary-color);
+  font-size: 2em;
+  border-radius: 8px;
+  padding: 20px 25px;
+  width: 550px;
+  height: 100px;
+  transition: transform 0.3s ease-in-out;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.btn-pay:hover {
+  background-color: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  transform: scale(1.05);
+}
+
+
+
+.client-modal {
+  --width: 90%;
+  --max-width: 600px;
+  --height: 80%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-container {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color:var(--blue-color);
+}
+
+.close-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  margin: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.search-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.text-save{
+  color: white;
+}
+
+.btn-save{
+  background-color: rgb(80, 202, 80);
+}
+
+.input-item {
+  flex: 1;
+  --border-radius: 8px;
+  --padding-start: 12px;
+}
+
+.search-button {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  background-color: rgb(207, 237, 255);
+  color: var(--secondary-color);
+
+}
+.search-icon, .search-text{
+  color:var(--blue-color);
+}
+
+.custom-keyboard {
+  margin: 15px 0;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+  gap: 6px;
+}
+
+.keyboard-key {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  min-width: 40px;
+  margin: 0;
+}
+
+.pin-key {
+  --padding-start: 18px;
+  --padding-end: 18px;
+  width: 60px;
+  margin: 0;
+   font-size: 1.4rem;
+  height: 48px;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    height: 60px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    height: 60px;
+  }
+}
+
+.payment-modal-content ion-grid{
+  margin: 0;
+  width: 100%;
+}
+.delete-key {
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: #666;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+.new-client-button {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.client-found-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.client-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.client-icon {
+  font-size: 48px;
+  color: var(--ion-color-primary);
+  margin-right: 15px;
+}
+
+.client-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+}
+
+.client-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.action-buttons {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-client-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item {
+  margin-bottom: 15px;
+  --border-radius: 8px;
+}
+
+.form-buttons {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pay-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btTrash {
+  color: var(--primary-color);
+  background-color: transparent;
+}
+
+.pay-list{
+  height: 300px;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.pay-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.btn-danger {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c03a4e;
+  font-weight: bold;
+}
+
+.pay-item ion-label{
+  width: 100%;
+  padding: 0 50px;
+  font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .client-modal {
+    --width: 95%;
+    --height: 85%;
+  }
+
+  .keyboard-key {
+    min-width: 30px;
+    font-size: 0.8rem;
+  }
+}
+
+
+//PRUEBA MODALES
+/* ... otros estilos ... */
+
+/* Estilos para el modal de pago */
+.payment-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.pin-display {
+  text-align: center;
+  margin: 20px 0;
+
+  h2 {
+    color: var(--ion-color-primary);
+    margin-bottom: 10px;
+  }
+}
+
+.pin-value {
+  font-size: 2rem;
+  letter-spacing: 0.5rem;
+  padding: 10px 0;
+  margin: 20px 0;
+  color: var(--ion-color-dark);
+}
+
+@media (max-width: 800px) {
+.pin-key {
+  --padding-start: 1px;
+  --padding-end: 1px;
+  width: 100%;
+  margin: 0;
+}
+}
+
+.pin-pad {
+  width: 100%;
+  max-width: 300px;
+  margin: 20px 0;
+
+  ion-button {
+    height: 60px;
+    font-size: 1.5rem;
+    --border-width: 2px;
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 480px) {
+  .pin-pad ion-button {
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .pin-value {
+    font-size: 1.5rem;
+  }
+}
+
+.modal-pay{
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  ion-col[size='9'],
+  ion-col[size='3'] {
+    flex-grow: 1;
+    flex-basis: 100%;
+    max-width: 100%;
+    display: flex; /* Añadimos flex a la columna izquierda */
+    flex-direction: column; /* Aseguramos disposición vertical dentro */
+  }
+
+  .zona-izquierda {
+    width: 100%;
+  }
+
+  .table {
+    flex-direction: column; /* Apilamos elementos en la fila de la mesa */
+    align-items: flex-start; /* Alineamos a la izquierda */
+    gap: 10px; /* Espacio entre nombre y botón */
+    margin-top: 0; /* Resetear margen superior */
+    padding: 10px; /* Añadir padding */
+    background-color: transparent; /* Resetear color de fondo de prueba */
+  }
+
+  .nameTable {
+    margin-left: 0; /* Resetear margen izquierdo */
+    font-size: 1.8rem; /* Ajustar tamaño de fuente */
+    text-align: left; /* Alinear a la izquierda */
+  }
+
+  .guest-count {
+    height: auto; /* Ajustar altura automáticamente */
+    padding: 10px 15px; /* Ajustar padding */
+    font-size: 1.2rem; /* Ajustar tamaño de fuente */
+    width: fit-content; /* Ajustar ancho al contenido */
+  }
+
+  .zona-categorias.table {
+    flex-direction: column; /* Apilamos total y precio por comensal */
+    align-items: flex-start; /* Alineamos a la izquierda */
+    padding: 10px; /* Añadir padding */
+  }
+
+  .box-price {
+    align-items: flex-start; /* Alineamos el contenido a la izquierda */
+    gap: 0.5em; /* Reducir el espacio entre total y por comensal */
+    margin-bottom: 10px; /* Añadir margen inferior */
+  }
+
+  .total {
+    font-size: 2.2rem; /* Ajustar tamaño de fuente */
+  }
+
+  .for-guest {
+    font-size: 1.1rem; /* Ajustar tamaño de fuente */
+  }
+
+  .orderLine.payment-list-inside-order app-order-line-list ion-list ion-item {
+    font-size: 1.2rem; /* Ajustar tamaño de fuente de la lista de pedido */
+    padding: 10px; /* Añadir padding a los items de la lista */
+  }
+
+  .impress {
+    flex-direction: column; /* Apilamos los botones de Ticket y Factura */
+    gap: 10px; /* Espacio entre botones */
+    margin: 1em; /* Reducir margen */
+
+    button {
+      width: 100%; /* Los botones ocupan todo el ancho */
+      height: 60px; /* Reducir altura de los botones */
+      font-size: 1.3rem; /* Ajustar tamaño de fuente */
+    }
+  }
+
+  .box-lateral {
+    padding: 15px; /* Reducir padding */
+    border-left: none; /* Ocultar la línea divisoria */
+    height: auto; /* Ajustar altura automáticamente */
+    min-width: auto; /* Ajustar ancho automáticamente */
+    padding-right: 15px; /* Eliminar padding derecho extra */
+  }
+
+  .box-lateral ion-row {
+    flex-direction: column; /* Apilamos los botones de pago */
+    gap: 10px; /* Espacio entre botones de pago */
+  }
+
+  .btn-pay {
+    width: 100%; /* Los botones de pago ocupan todo el ancho */
+    font-size: 1.8rem; /* Ajustar tamaño de fuente */
+    height: 80px; /* Ajustar altura */
+  }
+
+  .pay {
+    margin-top: 20px; /* Añadir margen superior */
+  }
+
+  .h2-pay-rest {
+    font-size: 2rem; /* Ajustar tamaño de fuente */
+    margin-bottom: 30px; /* Reducir margen inferior */
+  }
+
+  .pay-list {
+    height: auto; /* Ajustar altura automáticamente */
+    max-height: 200px; /* Establecer una altura máxima con scroll */
+  }
+
+  .pay-item ion-label {
+    font-size: 1.3rem; /* Ajustar tamaño de fuente de los items de pago */
+    padding: 0; /* Resetear padding */
+  }
+
+  .back {
+    flex-direction: column-reverse; /* Invertir orden para "Volver" arriba */
+    gap: 10px; /* Espacio entre botones */
+  }
+
+  .btPay,
+  .btBack {
+    font-size: 1.4rem; /* Ajustar tamaño de fuente de los botones */
+    height: 60px; /* Reducir altura */
+  }
+
+  /* Ajustes específicos para el modal de clientes en móvil */
+  .client-modal {
+    --width: 95%;
+    --height: auto; /* Ajustar altura al contenido */
+    --max-height: 90%; /* Mantener un máximo */
+  }
+
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .search-input-group {
+    flex-direction: column; /* Apilar input y botón de búsqueda */
+    gap: 10px;
+  }
+
+  .custom-keyboard .keyboard-row ion-button {
+    font-size: 0.9rem;
+    min-width: 36px;
+    height: 30px;
+  }
+
+  .keyboard-row{
+    gap: 0.15em;
+  }
+  .client-found-section .client-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .new-client-form h3 {
+    font-size: 1.2rem;
+  }
+
+  .form-item ion-label {
+    font-size: 1rem;
+  }
+
+  .form-buttons {
+    gap: 8px;
+  }
+
+  /* Ajustes específicos para el modal de pago en móvil */
+  .payment-modal-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .pin-value {
+    font-size: 1.8rem;
+  }
+
+  .pin-pad ion-button {
+    font-size: 1.3rem;
+    height: 50px;
+  }
+
+  ion-grid > ion-row {
+    display: flex;
+    //flex-direction: column; /* Colocamos las columnas verticalmente */
+  }
+
+  .col-izquierda {
+    order: 1; /* La columna izquierda aparecerá primero */
+    margin-bottom: 20px; /* Añadir espacio antes del box-lateral */
+  }
+
+  .box-lateral {
+    order: 2; /* El box-lateral aparecerá después */
+    width: 100%; /* Ocupa todo el ancho */
+    border-left: none; /* Eliminar borde izquierdo */
+    border-top: 1px solid var(--primary-color); /* Añadir borde superior */
+    padding: 15px; /* Añadir padding */
+    box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+    min-height: auto; /* Ajustar altura al contenido */
+    display: flex;
+    flex-direction: column; /* Disposición vertical principal */
+    align-items: stretch; /* Estirar elementos horizontalmente */
+    justify-content: flex-start; /* Alinear contenido al inicio verticalmente */
+  }
+
+  /* Estilos para la fila de botones EFECTIVO/TARJETA */
+  .box-lateral > ion-row:first-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+
+  .box-lateral > ion-row:first-child .btn-pay {
+    width: 48%; /* Ajustar ancho para dos botones en la fila */
+    font-size: 1.1rem; /* Reducir tamaño de fuente */
+    height: 50px; /* Reducir altura */
+  }
+
+  .box-lateral .pay {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar elementos */
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center; /* Centrar texto */
+  }
+
+  .box-lateral .h2-pay-rest {
+    font-size: 1.3rem; /* Reducir tamaño de fuente */
+    margin-bottom: 10px;
+  }
+
+  .box-lateral .pay-list {
+    max-height: 150px; /* Reducir altura máxima de la lista */
+    margin-bottom: 10px;
+  }
+
+  .box-lateral .pay-list .pay-item ion-label {
+    font-size: 1rem; /* Reducir tamaño de fuente del item de pago */
+    padding: 0 10px;
+  }
+
+  .box-lateral .back {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .box-lateral .btPay,
+  .box-lateral .btBack {
+    width: 48%; /* Ajustar ancho para dos botones en la fila */
+    font-size: 1.1rem; /* Reducir tamaño de fuente */
+    height: 50px; /* Reducir altura */
+  }
+
+}
+
+@media (max-width: 1500px){
+  .box-lateral ion-button{
+    width: 80%;
+    height: 80px;
+    font-size: large;
+    margin-bottom: 5px;
+  }
+
+  .box-lateral h2{
+    font-size: large;
+  }
+}
+
+@media (max-width: 1200px){
+  .box-lateral ion-button{
+    width: 60%;
+    height: 50px;
+    font-size: medium;
+    margin-bottom: 5px;
+
+  }
+
+  .box-lateral ion-row{
+    justify-content: flex-start;
+  }
+
+  .pay{
+    justify-content: left;
+  }
+
+  .box-lateral h2{
+    font-size: medium;
+  }
+
+  .back ion-button{
+    width: 60%;
+    height: 50px;
+    font-size: medium;
+    margin-bottom: 5px;
+  }
+
+  .pay-item ion-label{
+    font-size: small;
+    padding: 0;
+  }
+
+  .pay-item{
+    padding: 0px;
+  }
+
+}

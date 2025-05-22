@@ -1,0 +1,73 @@
+<ion-content color="light" id="main-content" class="page-content-with-header-padding">
+  <div class="superior">
+    <h2>CATEGORIAS</h2>
+    <ion-searchbar [debounce]="1000" (ionInput)="handleInput($event)"></ion-searchbar>
+    <ion-button fill="clear" class="btn-nuevo" (click)="showCreate()">Nuevo</ion-button>
+  </div>
+  <div class="list-container">
+    <ion-list [inset]="true">
+      <ion-item *ngFor="let category of results">
+        <ion-icon class="elipse" name="ellipse" [ngClass]="{ 'active': category.activo, 'inactive': !category.activo }"></ion-icon>
+        <ion-label>{{ category.categoria }}</ion-label>
+        <ion-button fill="clear" (click)="showInfo(category.id!)">
+          <ion-icon [ngClass]="{ 'active': category.activo, 'inactive': !category.activo }" class="icon-action" name="eye"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="showEdit(category.id!)">
+          <ion-icon [ngClass]="{ 'active': category.activo, 'inactive': !category.activo }" class="icon-action" name="create-sharp"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-modal
+  [isOpen]="showCategoryModal"
+  (didDismiss)="showCategoryModal = false"
+>
+  <ng-template>
+    <div class="category-form">
+      <h3>Datos de la categoria</h3>
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+        <ion-item class="form-item">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="categoria" [readonly]="isDisabled" required></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('categoria')">
+          <small *ngIf="categoryForm.get('categoria')?.errors?.['required']">Este campo es obligatorio.</small>
+          <small *ngIf="categoryForm.get('categoria')?.errors?.['maxlength']">No debe de tener más de 50 caracteres.</small>
+          <small *ngIf="categoryForm.get('categoria')?.errors?.['pattern']">El tipo de datos de este campo es invalido.</small>
+        </ion-text>
+        <ion-item class="form-item" *ngIf="!isDisabled">
+          <ion-label>Activo</ion-label>
+          <ion-toggle formControlName="activo" slot="start"></ion-toggle>
+        </ion-item>
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save"
+            expand="block"
+            fill="solid"
+            color="primary"
+            type="submit"
+            [disabled]="categoryForm.invalid"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button expand="block" fill="outline" color="medium" (click)="cancel()">
+            {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabled && !createCategory"
+            expand="block"
+            fill="outline"
+            color="danger"
+            (click)="deleteCategory()"
+            class="btn-cancel"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

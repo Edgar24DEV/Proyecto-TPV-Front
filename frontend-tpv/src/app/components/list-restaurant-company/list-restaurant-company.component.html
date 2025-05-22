@@ -1,0 +1,204 @@
+<app-header-tpv
+  [idCompany]="idCompany"
+  [companyName]="companyName"
+></app-header-tpv>
+<div class="superior">
+  <h2>RESTAURANTES</h2>
+
+  <ion-button fill="clear" class="btn-nuevo" (click)="addRestaurant()">
+    Nuevo
+  </ion-button>
+</div>
+<ion-content id="main-content">
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="6"
+        size-md="3"
+        *ngFor="let restaurant of listRestaurants"
+      >
+        <ion-card
+          id="present-alert"
+          color="primary-color"
+          (click)="restaurantLogin(restaurant)"
+        >
+          <ion-card-header>
+            <ion-card-title>{{ restaurant.nombre }}</ion-card-title>
+            <ion-icon
+              class="icon-action"
+              name="create-sharp"
+              (click)="editRestaurant(restaurant); $event.stopPropagation()"
+            ></ion-icon>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-modal class="custom-modal" [isOpen]="showRestaurantModal" (didDismiss)="showRestaurantModal = false">
+  <ng-template>
+    <div class="employee-form">
+      <h3>Crear Restaurante</h3>
+
+      <form [formGroup]="restaurantForm" (ngSubmit)="saveRestaurant()">
+        <!-- Nombre -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('nombre')">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('nombre')">
+          <small>Este campo es obligatorio.</small>
+        </ion-text>
+
+        <!-- Dirección -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('direccion')">
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input formControlName="direccion"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('direccion')">
+          <small>La dirección es obligatoria.</small>
+        </ion-text>
+
+        <!-- Teléfono -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('telefono')">
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input formControlName="telefono"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('telefono')">
+          <small *ngIf="restaurantForm.get('telefono')?.errors?.['required']">Este campo es obligatorio.</small>
+          <small *ngIf="restaurantForm.get('telefono')?.errors?.['pattern']">Introduce un teléfono válido.</small>
+        </ion-text>
+
+        <!-- Contraseña -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('contrasenya')">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input formControlName="contrasenya" type="password"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('contrasenya')">
+          <small *ngIf="restaurantForm.get('contrasenya')?.errors?.['required']">Este campo es obligatorio.</small>
+          <small *ngIf="restaurantForm.get('contrasenya')?.errors?.['pattern']">
+            Debe tener al menos 6 caracteres, incluyendo una mayúscula, una minúscula y un número.
+          </small>
+        </ion-text>
+
+        <!-- Dirección Fiscal -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('direccionFiscal')">
+          <ion-label position="floating">Dirección Fiscal</ion-label>
+          <ion-input formControlName="direccionFiscal"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('direccionFiscal')">
+          <small>La dirección fiscal es obligatoria.</small>
+        </ion-text>
+
+        <!-- CIF -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('cif')">
+          <ion-label position="floating">CIF</ion-label>
+          <ion-input formControlName="cif"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('cif')">
+          <small *ngIf="restaurantForm.get('cif')?.errors?.['required']">Campo obligatorio.</small>
+          <small *ngIf="restaurantForm.get('cif')?.errors?.['pattern']">Debe tener una letra inicial seguida de 7 u 8 números.</small>
+        </ion-text>
+
+        <!-- Razón Social -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('razonSocial')">
+          <ion-label position="floating">Razón Social</ion-label>
+          <ion-input formControlName="razonSocial"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('razonSocial')">
+          <small>La razón social es obligatoria.</small>
+        </ion-text>
+
+        <!-- Botón Guardar -->
+        <ion-button class="btn-save" expand="block" fill="solid" color="primary" [disabled]="restaurantForm.invalid" type="submit">
+          Guardar
+        </ion-button>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal Editar Restaurante -->
+<ion-modal class="custom-modal" [isOpen]="editRestaurantModal" (didDismiss)="editRestaurantModal = false">
+  <ng-template>
+    <div class="employee-form">
+      <h3>Editar Restaurante</h3>
+
+      <form [formGroup]="restaurantForm" (ngSubmit)="updateRestaurant()" class="employee-form">
+        <!-- Reutilizando los mismos campos -->
+        <!-- Nombre -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('nombre')">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('nombre')">
+          <small>Este campo es obligatorio.</small>
+        </ion-text>
+
+        <!-- Dirección -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('direccion')">
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input formControlName="direccion"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('direccion')">
+          <small>La dirección es obligatoria.</small>
+        </ion-text>
+
+        <!-- Teléfono -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('telefono')">
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input formControlName="telefono"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('telefono')">
+          <small *ngIf="restaurantForm.get('telefono')?.errors?.['required']">Este campo es obligatorio.</small>
+          <small *ngIf="restaurantForm.get('telefono')?.errors?.['pattern']">Introduce un teléfono válido.</small>
+        </ion-text>
+
+        <!-- Dirección Fiscal -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('direccionFiscal')">
+          <ion-label position="floating">Dirección Fiscal</ion-label>
+          <ion-input formControlName="direccionFiscal"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('direccionFiscal')">
+          <small>La dirección fiscal es obligatoria.</small>
+        </ion-text>
+
+        <!-- CIF -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('cif')">
+          <ion-label position="floating">CIF</ion-label>
+          <ion-input formControlName="cif"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('cif')">
+          <small *ngIf="restaurantForm.get('cif')?.errors?.['required']">Campo obligatorio.</small>
+          <small *ngIf="restaurantForm.get('cif')?.errors?.['pattern']">Debe tener una letra inicial seguida de 7 u 8 números.</small>
+        </ion-text>
+
+        <!-- Razón Social -->
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('razonSocial')">
+          <ion-label position="floating">Razón Social</ion-label>
+          <ion-input formControlName="razonSocial"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('razonSocial')">
+          <small>La razón social es obligatoria.</small>
+        </ion-text>
+
+        <!-- Botones del formulario -->
+        <div class="form-buttons">
+          <ion-button class="btn-save" expand="block" fill="solid" color="primary" type="submit">
+            Guardar
+          </ion-button>
+
+          <ion-button expand="block" fill="outline" color="medium" (click)="cancel()">
+            {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+
+          <ion-button *ngIf="!isDisabled && !createRestaurant" expand="block" fill="outline" color="danger" (click)="darBajaRestaurante()">
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

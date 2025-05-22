@@ -1,0 +1,21 @@
+
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="3"
+        size-md="3"
+        size-lg="2"
+        *ngFor="let category of categories"
+      >
+        <ion-card id={{category.id}} color="primary-color" class="category"
+         [class.selected]="category.id === selectedCategoryId" 
+         (click)="selectCategory(category.id!)">
+          <ion-card-header>
+            <ion-card-title>{{ category.categoria }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+

@@ -1,0 +1,80 @@
+<ion-tab-bar color="light" class="page-content-with-header-padding">
+  <ion-tab-button *ngFor="let location of listLocations" tab="1" 
+    (click)="filterLocation(location.id)" 
+    [class.selected]="location.id === selectedLocationId" >
+    <ion-label class="location-name">{{ location.ubicacion }}</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>
+
+
+<ion-content
+  color="light"
+  id="main-content"
+>
+  <div *ngIf="filterTables.length === 0" class="no-tables-message">
+    <p>No hay mesas disponibles para esta ubicación</p>
+  </div>
+
+  <div class="grid-container">
+    <div
+  class="grid-slot"
+  *ngFor="let cell of gridCells"
+  [style.gridRow]="cell.row + 1"
+  [style.gridColumn]="cell.col + 1"
+  (dragover)="allowDrop($event)"
+  (drop)="dropTable($event, cell.row, cell.col)"
+>
+  <ng-container *ngIf="getTablesAt(cell.row, cell.col) as tablesInCell">
+    <div *ngIf="tablesInCell.length > 1" class="multi-table-warning">
+      <ion-icon name="alert-circle" color="warning"></ion-icon>
+    </div>
+
+    <ion-card
+      *ngFor="let table of tablesInCell"
+      id="table-{{ table.id }}"
+      draggable="true"
+      (dragstart)="onDragStart($event, table)"
+      (dragend)="onDragEnd($event)"
+      (click)="clickTable(table.id, table.mesa)"
+      [ngClass]="{
+        'ocupada': table.estado === 'ocupada',
+        'libre': table.estado === 'libre',
+        
+      }"
+    >
+      <ion-card-header>
+        <ion-card-title>{{ table.mesa }}</ion-card-title>
+      </ion-card-header>
+      <ion-badge color="primary">{{ table.nComensales }}</ion-badge>
+    </ion-card>
+  </ng-container>
+</div>
+
+  </div>
+
+  <ion-fab *ngIf="!firefox" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toggleListen()" fill="clear" [ngClass]="{'stop': isListening}">
+      <ion-icon [name]="isListening ? 'stop' : 'mic'" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Modal de número de comensales -->
+  <ion-modal [isOpen]="showGuestsModal" (didDismiss)="showGuestsModal = false">
+    <ng-template>
+      <div class="custom-modal-content">
+        <h2>Número de comensales</h2>
+        <div class="guest-controls">
+          <button class="btn-control" (click)="decreaseGuests()">-</button>
+          <span class="guest-count">{{ guests }}</span>
+          <button class="btn-control" (click)="increaseGuests()">+</button>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn btn-danger" (click)="confirmGuests(idTableSelected)">
+            Confirmar
+          </button>
+          <button class="btn" (click)="showGuestsModal = false">Cancelar</button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+</ion-content>

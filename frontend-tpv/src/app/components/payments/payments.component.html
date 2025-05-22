@@ -1,0 +1,403 @@
+<ion-content id="main-content" class="page-content-with-header-padding">
+  <ion-grid>
+    <ion-row class="">
+      <!-- Columna principal -->
+      <ion-col [size]="isMobile ? '12' : '9'">
+        <div class="zona-izquierda">
+          <ion-row class="table">
+            <button fill="clear" (click)="cancelOrder()" class="cancel-btn">
+              Cancelar <br />
+              Pedido
+            </button>
+            <ion-label class="nameTable">{{ tableName }}</ion-label>
+            <button
+              fill="clear"
+              (click)="showGuestsModal = true"
+              class="guest-count"
+            >
+              Comensales
+            </button>
+          </ion-row>
+
+          <ion-row class="zona-categorias table">
+            <div class="box-price">
+              <ion-label class="total">{{ total.toFixed(2) }} €</ion-label>
+              <label class="for-guest">
+                {{ (total / guests).toFixed(2) }} €/comensal
+              </label>
+            </div>
+          </ion-row>
+
+          <ion-row class="orderLine payment-list-inside-order">
+            <app-order-line-list
+              #orderList
+              [orderLines]="orderLines"
+              [setEditingLine]="setEditingLine.bind(this)"
+              [setEditingMode]="setEditingMode.bind(this)"
+              [currentInputValue]="currentInputValue"
+              [editingLine]="currentEditingLine"
+              [editingMode]="editingMode"
+              [showTotals]="false"
+              id="order-pay"
+            ></app-order-line-list>
+          </ion-row>
+
+          <ion-row class="impress">
+            <button (click)="printTicket()">Ticket</button>
+            <button (click)="openClientModal()">Factura</button>
+          </ion-row>
+        </div>
+      </ion-col>
+
+      <!-- Columna lateral -->
+      <ion-col size="3" [size]="isMobile ? '12' : '3'">
+        <div class="box-lateral">
+          <ion-row>
+            <ion-button
+              class="btn-pay"
+              fill="clear"
+              (click)="openPayModal('Efectivo')"
+            >
+              EFECTIVO
+            </ion-button>
+
+            <ion-button
+              class="btn-pay"
+              fill="clear"
+              (click)="openPayModal('Tarjeta')"
+            >
+              TARJETA
+            </ion-button>
+          </ion-row>
+
+          <ion-row class="pay">
+            <h2 class="h2-pay-rest color-h2-rest" *ngIf="restante > 0">
+              Restante:
+              <span class="color-rest">{{ restante.toFixed(2) }} € </span>
+            </h2>
+            <h2 class="h2-pay-rest color-h2-dev" *ngIf="restante <= 0">
+              Devolver:
+              <span class="color-dev">{{ abs(restante.toFixed(2)) }} € </span>
+            </h2>
+
+            <ion-list class="pay-list">
+              <ion-item class="pay-item" *ngFor="let currentPay of payments">
+                <ion-label
+                  >{{ currentPay.tipo }} :
+                  {{ currentPay.cantidad?.toFixed(2) }} €</ion-label
+                >
+
+                <!-- Botón de eliminación -->
+                <ion-button
+                  fill="clear"
+                  class="btTrash"
+                  (click)="
+                    deletePayment(currentPay.tipo!, currentPay.cantidad!)
+                  "
+                >
+                  <ion-icon name="trash-outline" class="btTrash"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ion-row>
+
+          <ion-row class="back">
+            <!-- Botón de Pagar -->
+            <ion-button fill="clear" class="btPay" (click)="handleValidated()">
+              VALIDAR
+            </ion-button>
+            <!-- Botón de volver -->
+            <ion-button fill="clear" class="btBack" (click)="back()">
+              Volver
+            </ion-button>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- Modal Comensales -->
+<ion-modal [isOpen]="showGuestsModal" (didDismiss)="showGuestsModal = false">
+  <ng-template>
+    <div class="custom-modal-content">
+      <h2>Número de comensales</h2>
+      <div class="guest-controls">
+        <button class="btn-control" (click)="decreaseGuests()">-</button>
+        <span class="guest-count">{{ guests }}</span>
+        <button class="btn-control" (click)="increaseGuests()">+</button>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-danger" (click)="confirmGuests()">
+          Confirmar
+        </button>
+        <button class="btn" (click)="showGuestsModal = false">Cancelar</button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal Cliente - Versión Mejorada -->
+<ion-modal
+  [isOpen]="showClientModal"
+  (didDismiss)="showClientModal = false"
+  class="client-modal"
+>
+  <ng-template>
+    <div class="modal-container">
+      <!-- Encabezado del modal -->
+      <div class="modal-header">
+        <h2>Facturación a Cliente</h2>
+        <ion-button
+          fill="clear"
+          (click)="showClientModal = false"
+          class="close-button"
+        >
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Búsqueda de cliente existente -->
+      <div *ngIf="!addingNewClient && !foundClient" class="search-section">
+        <div class="search-input-group">
+          <ion-item class="input-item">
+            <ion-label position="floating">Buscar por CIF/NIF</ion-label>
+            <ion-input
+              type="text"
+              [(ngModel)]="clientSearchCif"
+              (ionInput)="onCifInputChange()"
+              autocomplete="off"
+              inputmode="none"
+            ></ion-input>
+          </ion-item>
+          <ion-button
+            fill="clear"
+            color="primary"
+            (click)="onCifInputChange()"
+            class="search-button"
+          >
+            <ion-icon class="search-icon" name="search" slot="start"></ion-icon>
+            <p class="search-text">Buscar</p>
+          </ion-button>
+        </div>
+        <div *ngIf="!cifLength" class="error-message">
+          <span> El formato del CIF es incorrecto</span>
+        </div>
+
+        <!-- Teclado alfanumérico -->
+        <div class="custom-keyboard">
+          <div class="keyboard-row">
+            <ion-button
+              *ngFor="
+                let key of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+              "
+              (click)="onCifKeyPressed(key)"
+              class="keyboard-key"
+              fill="clear"
+            >
+              {{ key }}
+            </ion-button>
+          </div>
+          <div class="keyboard-row">
+            <ion-button
+              *ngFor="
+                let key of ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
+              "
+              fill="clear"
+              (click)="onCifKeyPressed(key)"
+              class="keyboard-key"
+            >
+              {{ key }}
+            </ion-button>
+          </div>
+          <div class="keyboard-row">
+            <ion-button
+              *ngFor="
+                let key of ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ñ']
+              "
+              fill="clear"
+              (click)="onCifKeyPressed(key)"
+              class="keyboard-key"
+            >
+              {{ key }}
+            </ion-button>
+          </div>
+          <div class="keyboard-row">
+            <ion-button
+              *ngFor="let key of ['Z', 'X', 'C', 'V', 'B', 'N', 'M']"
+              fill="clear"
+              (click)="onCifKeyPressed(key)"
+              class="keyboard-key"
+            >
+              {{ key }}
+            </ion-button>
+            <ion-button
+              fill="clear"
+              (click)="onCifKeyPressed('←')"
+              class="keyboard-key delete-key"
+            >
+              <ion-icon name="backspace"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+
+        <div class="divider">
+          <span>O</span>
+        </div>
+
+        <ion-button
+          expand="block"
+          fill="clear"
+          (click)="addingNewClient = true"
+          class="new-client-button"
+        >
+          <ion-icon name="person-add" slot="start"></ion-icon>
+          Añadir nuevo cliente
+        </ion-button>
+      </div>
+
+      <!-- Cliente encontrado -->
+      <div *ngIf="foundClient" class="client-found-section">
+        <div class="client-card">
+          <ion-icon name="person-circle" class="client-icon"></ion-icon>
+          <div class="client-info">
+            <h3>{{ foundClient.nombre }}</h3>
+            <p><strong>CIF:</strong> {{ foundClient.cif }}</p>
+            <p><strong>Dirección:</strong> {{ foundClient.direccion }}</p>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <ion-button
+            expand="block"
+            fill="solid"
+            color="primary"
+            (click)="printBill(foundClient)"
+            class="select-button"
+          >
+            Usar este cliente
+          </ion-button>
+
+          <ion-button
+            expand="block"
+            fill="clear"
+            (click)="foundClient = null"
+            class="back-button"
+          >
+            Volver a buscar
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Formulario nuevo cliente -->
+      <div *ngIf="addingNewClient" class="new-client-form">
+        <h3>Datos del nuevo cliente</h3>
+
+        <form [formGroup]="clientForm" (ngSubmit)="saveNewClient()">
+          <ion-item class="form-item">
+            <ion-label position="floating">Nombre/Razón Social</ion-label>
+            <ion-input formControlName="razonSocial" required></ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="floating">CIF/NIF</ion-label>
+            <ion-input formControlName="cif" required></ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="floating">Dirección Fiscal</ion-label>
+            <ion-input formControlName="direccion"></ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input formControlName="email" type="email"></ion-input>
+          </ion-item>
+
+          <div class="form-buttons">
+            <ion-button
+              class="btn-save"
+              expand="block"
+              fill="clear"
+              color="primary"
+              [disabled]="!clientForm.valid"
+              type="submit"
+            >
+              <p class="text-save">Guardar cliente</p>
+            </ion-button>
+
+            <ion-button
+              expand="block"
+              fill="clear"
+              (click)="cancel()"
+              class="btn-cancel"
+            >
+              Cancelar
+            </ion-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<!-- ... resto del template ... -->
+
+<!-- Modal de Pago -->
+<ion-modal [isOpen]="showPayModal" (didDismiss)="closePayModal()">
+  <ng-template class="modal-pay">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Pago con</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closePayModal()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <div class="ion-padding">
+      <div class="payment-modal-content">
+        <div class="pin-display">
+          <h2>Introduce el importe</h2>
+          <div class="pin-value">{{ pay || "" }}</div>
+        </div>
+
+        <ion-grid>
+          <ion-row
+            *ngFor="
+              let row of [
+                ['1', '2', '3'],
+                ['4', '5', '6'],
+                ['7', '8', '9'],
+                [',', '0', '←']
+              ]
+            "
+          >
+            <ion-col *ngFor="let key of row">
+              <ion-button
+              class="pin-key"
+                expand="block"
+                fill="clear"
+                shape="round"
+                (click)="key === '←' ? deletePay() : onKeyPress(key)"
+              >
+                {{ key }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-button
+          expand="block"
+          color="primary"
+          [disabled]="!pay || pay === '0' || pay === '0,00'"
+          (click)="addPayment()"
+        >
+          Confirmar Pago
+        </ion-button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

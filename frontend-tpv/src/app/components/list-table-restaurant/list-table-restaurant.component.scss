@@ -1,0 +1,349 @@
+@use "../../../theme/variables" as var;
+
+/* ---------- Textos ---------- */
+.location-name {
+  font-size: large;
+  font-weight: bold;
+}
+
+
+/* ---------- Columnas y tarjetas ---------- */
+ion-col {
+  display: flex;
+  justify-content: center;
+}
+
+ion-tab-bar{
+  background-color:#F7E7E5;
+}
+
+ion-tab-button{
+  background-color:#F7E7E5;
+}
+
+ion-card {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 150px;
+  height: 80px;
+  border: 2px solid var(--primary-color);
+  border-radius: 15px;
+  background-color: var(--card-background);
+  box-shadow: 0 1px 1px var(--primary-color);
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  cursor: pointer;
+  text-wrap: balance;
+}
+
+ion-card:hover {
+  transform: scale(1.05);
+}
+
+.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+ion-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 100;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.ocupada {
+  background-color: var(--primary-color);
+  border-color: var(--secondary-color);
+  box-shadow: 0 1px 1px var(--secondary-color);
+  ion-badge {
+    background-color: var(--secondary-color);
+  }
+}
+
+.libre {
+  background-color: rgb(174, 243, 174);
+  border-color: rgb(23, 46, 23);
+  box-shadow: 0 1px 1px rgb(23, 46, 23);
+  ion-badge {
+    background-color: rgb(23, 46, 23);
+  }
+}
+
+
+.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* ---------- Grid de mesas ---------- */
+.grid-container {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.grid-slot {
+  border: 1px dotted #000; /* Borde punteado solo en celdas */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-container {
+  height: 100%;
+  width: 100%; // Toda la altura de la pantalla
+}
+
+
+/* ---------- Tarjetas de mesa ---------- */
+.table-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  text-align: center;
+  cursor: move;
+  transition: transform 0.2s ease;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+
+  &.ocupada {
+    background-color: var(--danger);
+    color: white;
+
+    ion-badge {
+      background-color: var(--secondary-color);
+    }
+  }
+
+  &.libre {
+    background-color: var(--success);
+    color: white;
+
+    ion-badge {
+      background-color: rgb(23, 46, 23);
+    }
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.table-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.table-status {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+ion-fab-button{
+  --background: var(--primary-color);
+}
+.stop{
+  scale: 1.2;
+}
+
+
+/* ---------- Modal ---------- */
+::ng-deep ion-modal {
+  --height: auto;
+  --max-height: 90%;
+  --width: auto;
+  --max-width: 400px;
+  --border-radius: 12px;
+  --box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+  --backdrop-opacity: 0.3;
+}
+
+::ng-deep ion-modal .custom-modal-content {
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 100%;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.guest-count {
+  padding: 0 15px;
+  font-size: 25px;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: white;
+  }
+}
+
+.btn-danger {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #c03a4e;
+    font-weight: bold;
+  }
+}
+
+.btn-control {
+  border-radius: 10px;
+  background-color: white;
+  border: 2px solid var(--secondary-color);
+  box-shadow: 0 1px 1px var(--secondary-color);
+  font-size: large;
+  padding: 20px 25px;
+  height: 70px;
+  transition: transform 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+/* ---------- Badges ---------- */
+ion-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 100;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Layout (si usas filas/columnas manuales) ---------- */
+.row {
+  display: flex;
+}
+
+.col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+ion-card.drop-animate {
+  animation: dropBounce 0.4s ease;
+}
+
+@keyframes dropBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.multi-table-warning {
+  position: absolute;
+  top: 2px;
+  right: -10px;
+  z-index: 2;
+  font-size: 2.2rem;
+  color: var(--ion-color-warning);
+}
+
+/* Media query para pantallas de hasta 768px (móviles) */
+@media (max-width: 920px) {
+  .grid-container {
+    height: 100%; /* Ajustar altura al contenido */
+    width: 98vw;
+    margin: 0 auto;
+    /* Manteniendo la estructura 10x8 para evitar reorganización */
+    grid-template-rows: repeat(auto, 1fr);
+    grid-template-columns: repeat(auto, 1fr);
+  }
+
+  ion-card {
+    width: 15vw; /* Aumentar el ancho relativo en móvil */
+    height: 12vw; /* Ajustar la altura proporcionalmente */
+    border-radius: 3vw;
+  }
+
+  .table-name {
+    font-size: 2vw; /* Ajustar tamaño de fuente */
+  }
+
+  ion-badge {
+    width: 5vw;
+    height: 5vw;
+    font-size: 2.2vw;
+  }
+
+  .btn-control {
+    font-size: small;
+    padding: 8px 12px;
+    height: auto;
+  }
+
+  .guest-count {
+    font-size: medium;
+  }
+
+  ::ng-deep ion-modal {
+    --max-width: 95%;
+  }
+}
+
+/* Media query para pantallas aún más pequeñas (ej: 480px) */
+@media (max-width: 480px) {
+  ion-card {
+    width: 15vw;
+    height: 14vw;
+    border-radius: 4vw;
+  }
+
+  ion-card-title{
+    font-size: 3vw;
+  }
+
+  ion-badge {
+    width: 6vw;
+    height: 6vw;
+    font-size: 2.8vw;
+  }
+}

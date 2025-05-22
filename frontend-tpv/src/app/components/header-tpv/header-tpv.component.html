@@ -1,0 +1,84 @@
+<div>
+  <ion-menu side="start" menuId="first" contentId="main-content" [disabled]="!isCompanyLoggedIn">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title (click)="goHome()">{{ companyName }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content *ngIf="isCompanyLoggedIn">
+      <ion-list>
+        <ion-item (click)="clients()">
+          Clientes
+        </ion-item>
+        <ion-item (click)="users()">
+          Empleados
+        </ion-item>
+        <ion-item (click)="products()">
+          Productos
+        </ion-item>
+        <ion-item (click)="orders()">
+          Pedidos
+        </ion-item>
+        <ion-item (click)="category()">
+          Categorias
+        </ion-item>
+        <ion-item (click)="roles()">
+          Roles
+        </ion-item>
+        <ion-item (click)="logoutApp()">
+          Logout
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-header *ngIf="isCompanyLoggedIn">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button menu="first"></ion-menu-button>
+      </ion-buttons>
+      <ion-title (click)="goHome()">
+        {{ companyName }}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+</div>
+
+<div *ngIf="restaurantName && employeeRol && !idCompany && !companyName">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button class="header-btn" (click)="logoutEmployee()">Logout</ion-button>
+      </ion-buttons>
+      <ion-title class="restaurant-title" (click)="goPanel()">
+        {{ restaurantName }}
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="employeeRol.tpv" (click)="goTables()" class="header-button-mobile header-btn">Mesas</ion-button>
+        <ion-button *ngIf="employeeRol.pago"  (click)="orders()" class="header-button-mobile header-btn">Pedidos</ion-button>
+        <ion-button class="icon-tpv" fill="clear">
+          <img src="../../../assets/icon/tpv.svg" alt="tpv">
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+</div>
+
+<div *ngIf="restaurantName && !employeeRol && !idCompany && !companyName">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button class="header-btn" (click)="logoutApp()">Logout</ion-button>
+      </ion-buttons>
+      <ion-title class="restaurant-title">
+        {{ restaurantName }}
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button class="icon-tpv" fill="clear">
+          <img src="../../../assets/icon/tpv.svg" alt="tpv">
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+</div>

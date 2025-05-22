@@ -1,0 +1,76 @@
+<ion-list>
+  <ion-item
+    *ngFor="let orderLine of orderLines"
+    (click)="selectOrderLine(orderLine)"
+    [class.order-line-activa]="editingLine?.id === orderLine.id"
+  >
+
+    <!-- Cantidad editable -->
+    <ion-input
+      type="text"
+      min="0"
+      [ngModel]="isEditing(orderLine, 'cantidad') ? currentInputValue || '0' : orderLine.cantidad"
+      (ngModelChange)="onCantidadChange(orderLine)"
+      placeholder="Cantidad"
+      inputmode="numeric"
+      (ionFocus)="setEditingLine(orderLine); setEditingMode('cantidad')"
+    ></ion-input>
+
+    <!-- Nombre -->
+    <ion-label>{{ orderLine.nombre }}</ion-label>
+
+    <!-- Total editable -->
+    <ion-input
+      type="text"
+      min="0"
+      [ngModel]="isEditing(orderLine, 'total') ? currentInputValue || '0.00' : (orderLine.precio ?? 0) * (orderLine.cantidad ?? 0) | number:'1.2-2'"
+      (ngModelChange)="onTotalChange($event, orderLine)"
+      placeholder="Total"
+      inputmode="decimal"
+      (ionFocus)="setEditingLine(orderLine); setEditingMode('total')"
+    ></ion-input>
+
+    <!-- Botón de eliminación -->
+    <ion-button fill="clear" (click)="confirmDelete(orderLine)">
+      <ion-icon name="trash-outline" class="btTrash"></ion-icon>
+    </ion-button>
+
+  </ion-item>
+</ion-list>
+
+<ion-modal [isOpen]="showDeleteModal" (didDismiss)="showDeleteModal = false">
+  <ng-template>
+    <div class="custom-modal-content">
+      <h2>¿Eliminar producto?</h2>
+      <p>
+        ¿Estás seguro de que quieres eliminar
+        <strong>{{ orderLineToDelete?.nombre }}</strong> de la lista?
+      </p>
+
+      <div class="modal-buttons">
+        <button class="btn btn-danger" (click)="deleteOrderLine(orderLineToDelete?.id)">Sí, eliminar</button>
+        <button class="btn" (click)="showDeleteModal = false">Cancelar</button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+
+
+<ion-item class="total" *ngIf="showTotals">
+  <ion-label class="labelInf">
+    Impuestos
+  </ion-label>
+  <ion-label class="valores">
+    {{ impuestos.toFixed(2) }} €
+  </ion-label>
+</ion-item>
+
+<ion-item class="total" *ngIf="showTotals">
+  <ion-label class="labelInf">
+    Total
+  </ion-label>
+  <ion-label class="valores">
+    {{ total.toFixed(2) }} €
+  </ion-label>
+</ion-item>

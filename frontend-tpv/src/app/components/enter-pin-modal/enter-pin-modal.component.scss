@@ -1,0 +1,47 @@
+@use "../../../theme/variables" as var;
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+ion-grid {
+  padding: 0;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+ion-button {
+  height: 60px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  margin: 0.5rem;
+  color: white;
+  font-weight: bold;
+  background-color: var(--primary-color);
+}
+
+ion-button[color="medium"] {
+  margin-top: 1.5rem;
+}
+
+.pin-digit {
+  margin: 0 30px;
+}
+.error-message {
+  margin-top: 1.5rem;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: var(--danger-color);
+
+  span {
+    font-size: var(--text-font-size);
+    color: white;
+    font-weight: bold;
+  }
+}
