@@ -1,0 +1,224 @@
+<ion-content color="light" id="main-content" class="page-content-with-header-padding">
+  <div class="superior">
+    <h2>EMPLEADOS</h2>
+    <ion-searchbar
+      [debounce]="1000"
+      (ionInput)="handleInput($event)"
+    ></ion-searchbar>
+    <ion-button fill="clear" class="btn-nuevo" (click)="showCreate()"
+      >Nuevo</ion-button
+    >
+  </div>
+  <div class="list-container">
+    <ion-list [inset]="true">
+      <ion-item *ngFor="let employee of results">
+        <ion-icon class="elipse" name="ellipse"></ion-icon>
+        <ion-label>{{ employee.nombre }}</ion-label>
+        <ion-button fill="clear" (click)="showInfo(employee.id!)">
+          <ion-icon class="icon-action" name="eye"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="showEdit(employee.id!)">
+          <ion-icon class="icon-action" name="create-sharp"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-modal
+  [isOpen]="showEmployeeModal"
+  (didDismiss)="showEmployeeModal = false"
+  class="employee-modal"
+>
+  <ng-template>
+    <div class="employee-form">
+      <h3>Datos del empleado</h3>
+
+      <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+        <ion-item class="form-item">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input
+            formControlName="nombre"
+            [readonly]="isDisabled"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('nombre')">
+          <small *ngIf="employeeForm.get('nombre')?.errors?.['required']">Este campo es obligatorio.</small>
+        </ion-text>
+
+        <ion-item class="form-item">
+          <ion-select
+            formControlName="rol"
+            [disabled]="isDisabled"
+            label="Rol"
+            label-placement="floating"
+            placeholder=" Seleccione un rol"
+            required
+          >
+            <ion-select-option *ngFor="let rol of listRols" [value]="rol.id">{{
+              rol.rol
+            }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('rol')">
+          <small *ngIf="employeeForm.get('rol')?.errors?.['required']">Este campo es obligatorio.</small>
+        </ion-text>
+
+        <ion-item class="form-item" *ngIf="companyName && createEmployee">
+          <ion-select
+            formControlName="restaurant"
+            [disabled]="isDisabled"
+            label="Restaurante"
+            label-placement="floating"
+            placeholder=" Seleccione un restaurante"
+            required
+          >
+            <ion-select-option
+              *ngFor="let restaurant of listRestaurants"
+              [value]="restaurant.id"
+            >
+              {{ restaurant.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="form-item" *ngIf="createEmployee">
+          <ion-label position="floating">PIN</ion-label>
+          <ion-input
+            type="password"
+            inputmode="numeric"
+            pattern="\d*"
+            formControlName="pin"
+            [readonly]="isDisabled"
+            maxlength="4"
+            minlength="4"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('pin') && createEmployee">
+          <small *ngIf="employeeForm.get('pin')?.errors?.['required']">Este campo es obligatorio.</small>
+        </ion-text>
+
+        <ion-list
+          [inset]="true"
+          *ngIf="!createEmployee"
+          class="list-restaurants"
+        >
+          <div class="container-rest-add">
+            <h4>Restaurantes:</h4>
+            <ion-button fill="clear" *ngIf=" companyName &&!isDisabled" (click)="showCreateRestaurant()">
+              <ion-icon name="add-circle-outline" class="btTrash" ></ion-icon>
+            </ion-button>
+          </div>
+
+          <ion-item *ngFor="let restaurant of listEmployeeRestaurant">
+            <div class="container-list-restaurants">
+              <div class="container-elipse-name-list-restuaurants">
+                <ion-icon class="elipse" name="ellipse"></ion-icon>
+                <ion-label class="label-list-restaurants">
+                  {{ restaurant.nombre }}
+                </ion-label>
+              </div>
+              <ion-button
+                fill="clear"
+                (click)="deleteRestaurant(restaurant.id!)"
+                *ngIf="(companyName && !isDisabled)|| (!companyName && !isDisabled && restaurant.id === idRestaurant)"
+              >
+                <ion-icon name="trash-outline" class="btTrash"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-item>
+        </ion-list>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save btn-form"
+            expand="block"
+            fill="solid"
+            color="primary"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="cancel()"
+            color="medium"
+          >
+            {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabled && !createEmployee"
+            expand="block"
+            fill="outline"
+            (click)="deleteEmployee()"
+            color="danger"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  [isOpen]="showRestaurantModal"
+  (didDismiss)="showRestaurantModal = false"
+  class="restaurant-modal"
+>
+  <ng-template>
+    <div class="employee-form">
+      <h3>Añadir restaurante</h3>
+
+      <form [formGroup]="restaurantForm" (ngSubmit)="saveRestaurant()">
+        <ion-item class="form-item">
+          <ion-label>{{employee.nombre}}</ion-label>
+        </ion-item>
+
+        <ion-item class="form-item" *ngIf="companyName">
+          <ion-select
+            formControlName="restaurant"
+            [disabled]="isDisabled"
+            label="Restaurante"
+            label-placement="floating"
+            placeholder=" Seleccione un restaurante"
+            required
+          >
+            <ion-select-option
+              *ngFor="let restaurant of listAvaibleRestaurants"
+              [value]="restaurant.id"
+            >
+              {{ restaurant.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save btn-form"
+            expand="block"
+            fill="outline"
+            color="primary"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="cancelRestaurant()"
+            color="medium"
+          >
+            Volver
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Introduce tu PIN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="error"  class="error-message"> 
+    <span> El pin es incorrecto</span>
+  </div>
+  <div class="pin-display">
+    
+    <span *ngIf="pin; else emptyPin">{{ pinLength }}</span>
+    <ng-template #emptyPin id="lineas">
+      <span class="pin-digit">_</span>
+      <span class="pin-digit">_</span>
+      <span class="pin-digit">_</span>
+      <span class="pin-digit">_</span>
+    </ng-template>
+  </div>
+
+  <ion-grid>
+    <ion-row *ngFor="let row of [['1','2','3'], ['4','5','6'], ['7','8','9'], ['←','0','✖']]">
+      <ion-col *ngFor="let key of row">
+        <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="
+            key === '←' ? deleteDigit() : 
+            key === '✖' ? cancel() : 
+            appendDigit(key)">
+          {{ key }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-button expand="full" fill="clear" (click)="submitPin()">
+      Aceptar
+    </ion-button>
+  </ion-grid>
+
+  
+</ion-content>

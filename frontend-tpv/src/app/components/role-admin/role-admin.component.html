@@ -1,0 +1,91 @@
+<ion-content color="light" id="main-content" class="page-content-with-header-padding">
+  <div class="superior">
+    <h2>ROLES</h2>
+    <ion-searchbar
+      [debounce]="500"
+      (ionInput)="handleInput($event)"
+    ></ion-searchbar>
+    <ion-button fill="clear" class="btn-nuevo" (click)="showCreate()"
+      >Nuevo</ion-button
+    >
+  </div>
+  <div class="list-container">
+    <ion-list [inset]="true">
+      <ion-item *ngFor="let role of results">
+        <ion-icon class="elipse" name="ellipse"></ion-icon>
+        <ion-label>{{ role.rol }}</ion-label>
+        <ion-button fill="clear" (click)="showInfo(role.id!)">
+          <ion-icon class="icon-action" name="eye"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="showEdit(role.id!)">
+          <ion-icon class="icon-action" name="create-sharp"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-modal [isOpen]="showRoleModal" (didDismiss)="showRoleModal = false">
+  <ng-template>
+    <div class="role-form">
+      <h3>Datos del rol</h3>
+
+      <form [formGroup]="roleForm" (ngSubmit)="saveRole()">
+        <ion-item class="form-item" [class.ion-invalid]="isInvalid('rol')">
+          <ion-label position="floating">Rol</ion-label>
+          <ion-input formControlName="rol" [readonly]="isDisabled"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalid('rol')">
+          <small *ngIf="roleForm.get('rol')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+        </ion-text>
+        <div class="container-checkbox">
+          <ion-checkbox formControlName="productos" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Productos</ion-checkbox>
+          <ion-checkbox formControlName="categorias" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Categorias</ion-checkbox>
+          <ion-checkbox formControlName="tpv" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">TPV</ion-checkbox>
+          <ion-checkbox formControlName="usuarios" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Usuarios</ion-checkbox>
+          <ion-checkbox formControlName="mesas" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Mesas</ion-checkbox>
+          <ion-checkbox formControlName="restaurante" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Restaurantes</ion-checkbox>
+          <ion-checkbox formControlName="clientes" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Clientes</ion-checkbox>
+          <ion-checkbox formControlName="empresa" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Empresa</ion-checkbox>
+          <ion-checkbox formControlName="pago" labelPlacement="end" [ngClass]="{'disabled-checkbox': isDisabled}">Pago</ion-checkbox>
+        </div>
+        <div *ngIf="error"  class="error-message"> 
+          <span>{{errorMessage}}</span>
+        </div>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabled"
+            class="btn-save btn-form"
+            expand="block"
+            fill="outline"
+            color="primary"
+            [disabled]="roleForm.invalid"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="cancel()"
+            color="medium"
+          >
+            {{ isDisabled ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabled && !createRole"
+            expand="block"
+            fill="outline"
+            (click)="delete()"
+            color="danger"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

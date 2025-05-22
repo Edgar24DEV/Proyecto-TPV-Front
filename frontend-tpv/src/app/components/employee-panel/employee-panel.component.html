@@ -1,0 +1,122 @@
+<ion-content>
+  <ion-grid class="centered-grid">
+<div class="card-conatiner">
+      <ion-card *ngIf="this.employeeRol.usuarios"
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="users()"
+      >
+        <img
+          src="../../../assets/icon/user.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>USUARIOS</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+      <ion-card *ngIf="this.employeeRol.productos"
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="products()"
+      >
+        <img
+          src="../../../assets/icon/product.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>PRODUCTOS</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="table()"
+        *ngIf="this.employeeRol.mesas"
+      >
+        <img
+          src="../../../assets/icon/table.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>MESAS</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="category()"
+        *ngIf="this.employeeRol.categorias"
+      >
+        <img
+          src="../../../assets/icon/category.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>CATEGORÍAS</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="order()"
+        *ngIf="this.employeeRol.pago"
+      >
+        <img
+          src="../../../assets/icon/order.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>PEDIDOS</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="tpv()"
+        *ngIf="this.employeeRol.tpv"
+      >
+        <img
+          src="../../../assets/icon/tpv.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>TPV</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card
+        id="present-alert"
+        color="primary-color"
+        class="centered-card"
+        (click)="clients()"
+        *ngIf="this.employeeRol.clientes"
+      >
+        <img
+          src="../../../assets/icon/client.svg"
+          alt="User"
+          class="card-icon"
+        />
+        <ion-card-header>
+          <ion-card-title>CLIENTES</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+    </div>
+  </ion-grid>
+</ion-content>

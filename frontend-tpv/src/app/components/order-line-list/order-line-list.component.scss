@@ -1,0 +1,124 @@
+ion-label {
+    justify-content: center;
+    text-align: center;
+    padding: auto 0;
+  }
+  
+  ion-input {
+    width: 15%;
+  }
+  
+  ion-list {
+    height: 42vh;
+    overflow-y: auto;
+    border-bottom: 2px solid var();
+  }
+  
+  .nonvisible {
+    display: none;
+  }
+  
+  .order-line-activa {
+    border-left: 3px solid #4d7ed8;
+  }
+  
+  .btTrash {
+    color: var(--primary-color);
+  }
+
+  ion-item{
+    width: 100%;
+  }
+
+  .total{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:20px;
+    @media (max-width: 1500px){
+      gap: 1px;
+
+      .labelInf{
+        padding-right: 10px;
+      }
+    }
+  }
+
+ 
+  .labelInf{
+    padding-right: 200px;
+  }
+  .valores{
+    width: 100px;
+  }
+  
+  /* Estilo para centrar y reducir el tamaño del modal */
+  ::ng-deep ion-modal {
+    --height: auto;
+    --max-height: 90%;
+    --width: auto;
+    --max-width: 400px;
+    --border-radius: 12px;
+    --box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+    --backdrop-opacity: 0.3;
+  }
+  
+  ::ng-deep ion-modal .custom-modal-content {
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 100%;
+  }
+  
+  /* Botones del modal */
+  .modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #ccc;
+  }
+  
+  .btn-danger {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c03a4e;
+    font-weight: bold;
+  }
+
+  @media (max-width: 1500px) {
+
+    ion-label{
+      font-size: 15px !important;
+    }
+    ion-input{
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+
+    ion-label{
+      font-size: 12px !important;
+    }
+    ion-input{
+      font-size: 12px;
+    }
+  }
+  

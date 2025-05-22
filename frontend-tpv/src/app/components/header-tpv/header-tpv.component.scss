@@ -1,0 +1,88 @@
+@use '../../../theme/variables' as var;
+
+  ion-title {
+    font-weight: bold;
+    color: var(--primary-color);
+    width: 100%; /* Ocupa el espacio restante */
+    text-align: center; /* Centra el título en móviles */
+  }
+
+  ion-header {
+    background-color: white;
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente en general */
+    align-items: center;
+    flex-direction: row;
+  }
+
+  ion-toolbar {
+    display: flex;
+    justify-content: space-between; /* Espacia los elementos principales */
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+
+  ion-buttons {
+    display: flex; /* Asegura que los botones se alineen en fila */
+    align-items: center;
+  }
+
+.header-btn {
+    border: solid 2px var(--primary-color);
+    border-radius: 8px;
+    margin-left: 5px; /* Reduce el margen en móviles */
+    margin-right: 5px;
+    font-size: 0.8rem; /* Reduce el tamaño del texto en móviles */
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+
+
+
+  .restaurant-title {
+    text-align: left; /* Centra el título del restaurante en móviles */
+  }
+
+  img {
+    width: 30px; /* Reduce el tamaño del logo en móviles */
+  }
+
+  /* Estilos específicos para pantallas más grandes (ej: tablets y escritorios) */
+  @media (min-width: 768px) {
+    ion-title {
+      text-align: left; /* Vuelve a la alineación izquierda en pantallas grandes */
+    }
+
+    ion-toolbar {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    ion-buttons ion-button {
+      margin-left: 10px;
+      margin-right: 20px;
+      font-size: 1rem;
+      --padding-start: 16px;
+      --padding-end: 16px;
+    }
+
+    img {
+      width: 40px; /* Vuelve al tamaño original del logo */
+    }
+
+    .header-button-mobile {
+      display: inline-block; /* Muestra los botones en pantallas grandes */
+    }
+  }
+
+  /* Oculta los botones "Mesas" y "Pedidos" en pantallas pequeñas por defecto */
+  /*.header-button-mobile {
+    display: none;
+  }*/
+
+  .icon-tpv{
+    border: none;
+  }
+

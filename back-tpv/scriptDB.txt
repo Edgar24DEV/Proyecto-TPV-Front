@@ -1,0 +1,74 @@
+-- Insertar en empresas
+INSERT INTO empresas (id, nombre, direccion_fiscal, CIF, razon_social, telefono, correo, contrasenya, created_at, updated_at)
+VALUES 
+(1, 'Restaurante El Buen Sabor', 'Calle Falsa 123', 'B12345678', 'El Buen Sabor S.L.', '600123456', 'contacto@buen-sabor.com', 'password123', NOW(), NOW());
+
+-- Insertar en roles
+INSERT INTO rols (id, rol, productos, categorias, tpv, usuarios, mesas, restaurante, clientes, empresa, pago, id_empresa, created_at, updated_at)
+VALUES 
+(1, 'Administrador', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, NOW(), NOW());
+
+-- Insertar en empleados
+INSERT INTO empleados (id, nombre, pin, id_empresa, id_rol, created_at, updated_at)
+VALUES 
+(1, 'Juan Pérez', 1234, 1, 1, NOW(), NOW());
+
+-- Insertar en restaurantes
+INSERT INTO restaurantes (id, nombre, direccion, telefono, contrasenya, direccion_fiscal, CIF, razon_social, id_empresa, created_at, updated_at)
+VALUES 
+(1, 'Restaurante El Buen Sabor', 'Calle Falsa 123', '600123456', 'password123', 'Calle Falsa 123', 'B12345678', 'El Buen Sabor S.L.', 1, NOW(), NOW());
+
+-- Insertar en emp_rest
+INSERT INTO emp_rest (id, id_empleado, id_restaurante, created_at, updated_at)
+VALUES 
+(1, 1, 1, NOW(), NOW());
+
+-- Insertar en categorias
+INSERT INTO categorias (id, categoria, activo, id_empresa, created_at, updated_at)
+VALUES 
+(1, 'Entrantes', 1, 1, NOW(), NOW()),
+(2, 'Postres', 1, 1, NOW(), NOW());
+
+-- Insertar en productos
+INSERT INTO productos (id, nombre, precio, imagen, activo, id_categoria, id_empresa, created_at, updated_at)
+VALUES 
+(1, 'Ensalada César', 9.99, 'ensalada.jpg', 1, 1, 1, NOW(), NOW()),
+(2, 'Tarta de Queso', 5.99, 'tarta.jpg', 1, 2, 1, NOW(), NOW());
+
+-- Insertar en clientes
+INSERT INTO clientes (id, razon_social, cif, direccion_fiscal, correo, id_empresa, created_at, updated_at)
+VALUES 
+(1, 'Cliente Ejemplo', 'C12345678', 'Calle del Cliente 456', 'cliente@email.com', 1, NOW(), NOW());
+
+-- Insertar en ubicaciones
+INSERT INTO ubicaciones (id, ubicacion, activo, id_restaurante, created_at, updated_at)
+VALUES 
+(1, 'Zona Interior', 1, 1, NOW(), NOW());
+
+-- Insertar en mesas
+INSERT INTO mesas (id, mesa, activo, id_ubicacion, created_at, updated_at)
+VALUES 
+(1, 'Mesa 1', 1, 1, NOW(), NOW()),
+(2, 'Mesa 2', 1, 1, NOW(), NOW());
+
+-- Insertar en pedidos
+INSERT INTO pedidos (id, estado, fecha_inicio, fecha_fin, comensales, id_mesa, created_at, updated_at)
+VALUES 
+(1, 'Abierto', NOW(), NOW(), 2, 1, NOW(), NOW());
+
+-- Insertar en lineas_pedido
+INSERT INTO lineas_pedido (id, id_pedido, id_producto, cantidad, precio, nombre, observaciones, estado, created_at, updated_at)
+VALUES 
+(1, 1, 1, 1, 9.99, 'Ensalada César', 'Sin croutons', 'Pendiente', NOW(), NOW()),
+(2, 1, 2, 1, 5.99, 'Tarta de Queso', 'Extra caramelo', 'Pendiente', NOW(), NOW());
+
+-- Insertar en pagos
+INSERT INTO pagos (id, tipo, cantidad, fecha, id_pedido, id_cliente, razon_social, CIF, n_factura, correo, direccion_fiscal, created_at, updated_at)
+VALUES 
+(1, 'Tarjeta', 15.98, NOW(), 1, 1, 'Cliente Ejemplo', 'C12345678', 'F123456', 'cliente@email.com', 'Calle del Cliente 456', NOW(), NOW());
+
+-- Insertar en rest_prod
+INSERT INTO rest_prod (id, activo, id_producto, id_restaurante, created_at, updated_at)
+VALUES 
+(1, 1, 1, 1, NOW(), NOW()),
+(2, 1, 2, 1, NOW(), NOW());

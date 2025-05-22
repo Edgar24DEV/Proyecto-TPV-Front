@@ -1,0 +1,151 @@
+<ion-content
+  color="light"
+  id="main-content"
+  class="page-content-with-header-padding"
+>
+  <div class="superior">
+    <h2>PEDIDOS</h2>
+  </div>
+  <div class="list-container">
+    <table>
+      <tr>
+        <th>id</th>
+        <th>
+          <div>
+            Estado
+            <ion-icon
+              name="filter-outline"
+              (click)="filterByStatus()"
+            ></ion-icon>
+          </div>
+        </th>
+        <th>Mesa</th>
+        <th>Comensales</th>
+        <th>
+          <div>
+            Fecha inicio
+            <ion-icon name="filter-outline" (click)="filterByDate()"></ion-icon>
+          </div>
+      
+        </th>
+        <th>
+          <div>
+            Fecha fin
+            <ion-icon
+              name="filter-outline"
+              (click)="filterByDateEnd()"
+            ></ion-icon>
+          </div>
+      
+        </th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let order of filterOrder">
+        <td>
+          {{ order.id }}
+        </td>
+        <td class="izq"
+          [ngClass]="{
+            abierto: order.estado === 'Abierto',
+            pendiente: order.estado === 'Pendiente',
+            cerrado: order.estado === 'Cerrado',
+            cancelado: order.estado === 'Cancelado'
+          }"
+        >
+          {{ order.estado }}
+        </td>
+        <td>{{ order.idMesa }}</td>
+        <td>{{ order.comensales }}</td>
+        <td class="izq">{{ order.fechaInicio | date : "dd/MM/yyyy HH:mm" }}</td>
+        <td class="izq">{{ order.fechaFin | date : "dd/MM/yyyy HH:mm" }}</td>
+        <td>
+          <ion-button fill="clear" (click)="loadInfo(order)">
+            <ion-icon
+              class="icon-action"
+              [ngClass]="{
+                abierto: order.estado === 'Abierto',
+                pendiente: order.estado === 'Pendiente',
+                cerrado: order.estado === 'Cerrado',
+                cancelado: order.estado === 'Cancelado'
+              }"
+              name="eye"
+            ></ion-icon>
+          </ion-button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ion-content>
+
+<ion-modal
+  [isOpen]="showOrderModal"
+  (didDismiss)="showOrderModal = false"
+  class="productInfo"
+>
+  <ng-template>
+    <div class="order-modal">
+      <h3>Datos del pedido</h3>
+      <h4>
+        Estado:
+        <span
+          [ngClass]="{
+            abierto: estado === 'Abierto',
+            pendiente: estado === 'Pendiente',
+            cerrado: estado === 'Cerrado',
+            cancelado: estado === 'Cancelado'
+          }"
+          >{{ estado }}</span
+        >
+      </h4>
+      <div class="product-section">
+        <table class="productos">
+          <tr>
+            <th>Cantidad</th>
+            <th>Producto</th>
+            <th>Precio</th>
+          </tr>
+          <tr *ngFor="let product of orderInfo">
+            <td>{{ product.cantidad }}</td>
+            <td>{{ product.nombre }}</td>
+            <td>{{ product.precio?.toFixed(2) }} €</td>
+          </tr>
+        </table>
+        <p class="total" *ngIf="total > 0">Total: {{ total.toFixed(2) }} €</p>
+      </div>
+      <div class="factura" *ngIf="infoPayment.length != 0">
+        <div *ngIf="!factura" class="box-generar-factura">
+          <h5>No se ha creado la factura</h5>
+          <button (click)="createBill()">Generar factura</button>
+        </div>
+        <button *ngIf="factura" (click)="showBill()">Ver factura</button>
+      </div>
+    </div>
+    <div
+      class="factura"
+      *ngIf="infoPayment.length == 0 && estado != 'Cancelado'"
+    >
+      <button class="pagar" (click)="pay()">Pagar</button>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  [isOpen]="findClientModal"
+  (didDismiss)="findClientModal = false"
+  class="productInfo"
+>
+  <ng-template>
+    <div class="order-client">
+      <ion-searchbar
+        [debounce]="1000"
+        (ionInput)="handleInput($event)"
+      ></ion-searchbar>
+
+      <ion-list>
+        <ion-item *ngFor="let client of results" (click)="doBill(client)">
+          <ion-label>{{ client.razonSocial }} - {{ client.cif }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ng-template>
+</ion-modal>

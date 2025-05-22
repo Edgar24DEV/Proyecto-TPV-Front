@@ -1,0 +1,12 @@
+<ion-app>
+  <app-header-tpv
+    [idCompany]="idCompany"
+    [companyName]="companyName"
+    [idRestaurant]="idRestaurant"
+    [restaurantName]="restaurantName"
+    [employeeRol]="employeeRol"
+    (reloadHeader)="reloadHeader()"
+  ></app-header-tpv>
+  <app-alert></app-alert>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

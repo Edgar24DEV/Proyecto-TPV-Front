@@ -1,0 +1,153 @@
+/* Estilos para el menú */
+ion-menu {
+  --ion-background-color: var(--ion-color-light);
+  --ion-text-color: var(--ion-color-dark);
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: white;
+  }
+
+  ion-list {
+    background: transparent;
+    padding-top: 10px;
+  }
+
+  ion-item {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: 60px;
+
+    ion-icon {
+      margin-right: 15px;
+      font-size: 1.4rem;
+    }
+  }
+}
+
+/* Estilos para las cards de restaurante */
+.restaurant-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px;
+  text-align: center;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  ion-card-header {
+    padding: 20px 10px;
+    display: grid;
+  }
+
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .restaurant-card {
+    min-height: 120px;
+
+    ion-card-title {
+      font-size: 1rem;
+    }
+  }
+}
+
+ion-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--primary-color);
+}
+
+.btn-nuevo {
+  justify-self: flex-end;
+  border: 1px solid gray;
+  border-radius: 8px;
+  color: gray;
+  font-weight: bold;
+  width: 120px;
+  height: 40px;
+  background-color: white;
+}
+
+.superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px;
+}
+
+h2 {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 32px;
+}
+
+::ng-deep ion-modal.custom-modal {
+  --height: 90%;
+  --max-height: 90%;
+}
+
+::ng-deep .custom-modal .modal-wrapper {
+  height: 80% !important;
+  max-height: 90% !important;
+  overflow-y: auto;
+}
+
+.employee-form {
+  flex:1 1 0;
+
+  height: 100%;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+ion-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  color: var(--primary-color);
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+
+ion-card-header{
+display: flex;
+align-items: center;
+flex-direction: row;
+justify-content: space-between;
+
+}
+
+ion-card {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+ion-text {
+  small {
+    font-size: 10px;
+    margin-left: 20px;
+    display: inline-block;
+  }
+}

@@ -1,0 +1,255 @@
+<ion-content color="light" id="main-content" class="page-content-with-header-padding">
+  <div class="estructura">
+    <div>
+      <div class="superior">
+        <h2>UBICACIONES</h2>
+        <ion-searchbar
+          [debounce]="500"
+          (ionInput)="handleInputLocation($event)"
+          placeholder="Buscar ubicacion..."
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          class="btn-nuevo"
+          (click)="showCreateLocation()"
+          >Nuevo</ion-button
+        >
+      </div>
+      <div class="list-container">
+        <ion-list [inset]="true">
+          <ion-item *ngFor="let location of resultsLocation">
+            <ion-icon
+              [ngClass]="{
+                activo: location.activo,
+                desactivo: !location.activo
+              }"
+              class="elipse"
+              name="ellipse"
+            ></ion-icon>
+            <ion-label>{{ location.ubicacion }}</ion-label>
+            <ion-button fill="clear" (click)="showInfoLocation(location.id!)">
+              <ion-icon  [ngClass]="{
+                activo: location.activo,
+                desactivo: !location.activo
+              }" class="icon-action" name="eye"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="showEditLocation(location.id!)">
+              <ion-icon [ngClass]="{
+                activo: location.activo,
+                desactivo: !location.activo
+              }" class="icon-action" name="create-sharp"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+    <div>
+      <div class="superior">
+        <h2>MESAS</h2>
+        <ion-searchbar
+          [debounce]="500"
+          (ionInput)="handleInputTable($event)"
+          placeholder="Buscar mesas..."
+        ></ion-searchbar>
+        <ion-button fill="clear" class="btn-nuevo" (click)="showCreateTable()"
+          >Nuevo</ion-button
+        >
+      </div>
+      <div class="list-container">
+        <ion-list [inset]="true">
+          <ion-item *ngFor="let table of resultsTable">
+            <ion-icon
+              [ngClass]="{
+                activo: table.activo,
+                desactivo: !table.activo
+              }"
+              class="elipse"
+              name="ellipse"
+            ></ion-icon>
+            <ion-label>{{ table.mesa }}</ion-label>
+            <ion-button fill="clear" (click)="showInfoTable(table.id!)">
+              <ion-icon  [ngClass]="{
+                activo: table.activo,
+                desactivo: !table.activo
+              }" class="icon-action" name="eye"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="showEditTable(table.id!)">
+              <ion-icon  [ngClass]="{
+                activo: table.activo,
+                desactivo: !table.activo
+              }" class="icon-action" name="create-sharp"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-modal [isOpen]="showTableModal" (didDismiss)="showTableModal = false">
+  <ng-template>
+    <div class="table-form">
+      <h3>Datos de la mesa</h3>
+      <form [formGroup]="tableForm" (ngSubmit)="saveTable()">
+        <ion-item
+          class="form-item"
+          [class.ion-invalid]="isInvalidTable('mesa')"
+        >
+          <ion-label position="floating">Mesa</ion-label>
+          <ion-input
+            formControlName="mesa"
+            [readonly]="isDisabledTable"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalidTable('mesa')">
+          <small *ngIf="tableForm.get('mesa')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+          <small *ngIf="tableForm.get('mesa')?.errors?.['maxlength']">
+            Máximo 255 caracteres.
+          </small>
+        </ion-text>
+        <ion-item
+          class="form-item-activo"
+          [class.ion-invalid]="isInvalidTable('activo')"
+        >
+          <ion-label position="floating">Activo</ion-label>
+          <ion-toggle
+            formControlName="activo"
+            [checked]="tableForm.get('activo')?.value"
+            (ionChange)="onToggleChange($event)"
+            aria-label="Activar mesa"
+          ></ion-toggle>
+        </ion-item>
+        <ion-item class="form-item">
+          <ion-select
+            formControlName="idUbicacion"
+            [disabled]="isDisabledTable"
+            label="Ubicación"
+            label-placement="floating"
+            placeholder=" Seleccione una ubicación"
+            required
+          >
+            <ion-select-option
+              *ngFor="let ubicacion of listLocation"
+              [value]="ubicacion.id"
+              >{{ ubicacion.ubicacion }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalidTable('idUbicacion')">
+          <small *ngIf="tableForm.get('idUbicacion')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+        </ion-text>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabledTable"
+            class="btn-save btn-form"
+            expand="block"
+            fill="outline"
+            color="primary"
+            [disabled]="tableForm.invalid"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+
+          <ion-button
+            expand="block"
+            fill="outline"
+            color="medium"
+            (click)="cancel()"
+          >
+            {{ isDisabledTable ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabledTable && !createTable"
+            expand="block"
+            fill="outline"
+            color="danger"
+            (click)="deleteTable()"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  [isOpen]="showLocationModal"
+  (didDismiss)="showLocationModal = false"
+>
+  <ng-template>
+    <div class="location-form">
+      <h3>Datos de la ubicación</h3>
+
+      <form [formGroup]="locationForm" (ngSubmit)="saveLocation()">
+        <ion-item
+          class="form-item"
+          [class.ion-invalid]="isInvalidLocation('ubicacion')"
+        >
+          <ion-label position="floating">Ubicación</ion-label>
+          <ion-input
+            formControlName="ubicacion"
+            [readonly]="isDisabledLocation"
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isInvalidLocation('ubicacion')">
+          <small *ngIf="locationForm.get('ubicacion')?.errors?.['required']">
+            Este campo es obligatorio.
+          </small>
+          <small *ngIf="locationForm.get('ubicacion')?.errors?.['maxlength']">
+            Máximo 255 caracteres.
+          </small>
+        </ion-text>
+        <ion-item
+          class="form-item-activo"
+          [class.ion-invalid]="isInvalidLocation('ubicacion')"
+        >
+          <ion-label position="floating">Activo</ion-label>
+          <ion-toggle
+            formControlName="activo"
+            [checked]="locationForm.get('activo')?.value"
+            (ionChange)="onToggleChange($event)"
+            aria-label="Activar ubicación"
+          ></ion-toggle>
+        </ion-item>
+
+        <div class="form-buttons">
+          <ion-button
+            *ngIf="!isDisabledLocation"
+            class="btn-save"
+            expand="block"
+            fill="outline"
+            color="primary"
+            [disabled]="locationForm.invalid"
+            type="submit"
+          >
+            <p class="text-save">Guardar</p>
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="outline"
+            color="medium"
+            (click)="cancel()"
+          >
+            {{ isDisabledLocation ? "Volver" : "Cancelar" }}
+          </ion-button>
+          <ion-button
+            *ngIf="!isDisabledLocation && !createLocation"
+            expand="block"
+            fill="outline"
+            (click)="deleteLocation()"
+            color="danger"
+          >
+            Dar de Baja
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

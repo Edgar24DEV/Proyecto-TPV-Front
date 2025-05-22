@@ -1,0 +1,199 @@
+@use "../../../theme/variables" as var;
+
+ion-content {
+  --padding-bottom: 20px;
+}
+
+.superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px;
+
+  h2 {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 28px;
+    margin: 0px;
+    text-align: center;
+  }
+}
+@media (max-width: 960px) {
+  .superior {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 20px;
+  
+    h2 {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  
+    ion-searchbar {
+      margin-bottom: 15px;
+    }
+}
+}
+
+.btn-nuevo {
+  border: 1px solid gray;
+  border-radius: 8px;
+  color: gray;
+  font-weight: bold;
+  width: 100%;
+  height: 40px;
+  background-color: white;
+}
+
+.list-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+ion-list {
+  width: 100%;
+  height: auto;
+  overflow-y: auto;
+  [inset] {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+ion-item {
+  font-size: 18px;
+  padding: 0 15px;
+  --inner-padding-end: 10px;
+}
+
+ion-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--primary-color);
+}
+
+.elipse {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+}
+
+.icon-action {
+  padding: 0 3px;
+}
+
+/* Estilos específicos para pantallas más grandes (tablets y escritorios) */
+@media (min-width: 768px) {
+  .superior {
+    flex-direction: row;
+    align-items: center;
+    margin: 30px;
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 0;
+      text-align: left;
+      margin-right: 20px;
+    }
+
+    .btn-nuevo {
+      width: 120px;
+    }
+  }
+
+  .list-container {
+    padding: 0;
+  }
+
+  ion-list {
+    width: 80%;
+  }
+
+  ion-item {
+    font-size: 24px;
+    padding: 0 40px;
+    --inner-padding-end: 24px;
+  }
+
+  ion-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .elipse {
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+  }
+
+  .icon-action {
+    padding: 0 5px;
+  }
+}
+
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  form {
+    // padding: 20px 0 0 50px;
+    width: 90%;
+    ion-item {
+      margin: 10px 0;
+    }
+  }
+  h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 24px;
+  }
+}
+.employee-modal {
+  --width: 90%;
+  --max-width: 600px;
+  --height: 80%;
+}
+
+.label-list-restaurants {
+  font-size: 18px;
+}
+
+.list-restaurants {
+  height: auto;
+  max-height: 500px;
+  overflow-y: auto;
+  width: 95%;
+  .container-list-restaurants {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .container-elipse-name-list-restuaurants {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  .container-rest-add{
+    padding-left: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: end;
+  }
+}
+
+.btTrash {
+  height: 24px;
+  width: 24px;
+}
+
+ion-text{
+  padding-left: 50px;
+}

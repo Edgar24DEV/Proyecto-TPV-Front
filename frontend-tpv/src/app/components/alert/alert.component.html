@@ -1,0 +1,4 @@
+    <div *ngIf="alert" [ngClass]="cssClass(alert.type)" class="alert-box">
+      <strong>{{ alert.title }}</strong><br />
+      {{ alert.message }}
+    </div>

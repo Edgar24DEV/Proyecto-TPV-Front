@@ -1,0 +1,9 @@
+<ion-grid>
+  <ion-row *ngFor="let row of [['1','2','3'], ['4','5','6'], ['7','8','9'], [',','0','←']]">
+    <ion-col *ngFor="let key of row">
+      <ion-button expand="block" fill="clear" (click)="onKeyPress(key)">
+        {{ key }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

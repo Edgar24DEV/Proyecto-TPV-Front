@@ -1,0 +1,272 @@
+@use "../../../theme/variables" as var;
+
+ion-content {
+  --padding-bottom: 20px;
+}
+
+.estructura {
+  display: flex;
+  flex-direction: column; /* Disposición por defecto en columna */
+  width: 100%;
+}
+
+.estructura > div {
+  width: 100%; /* Cada sección ocupa todo el ancho por defecto */
+}
+
+.superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px;
+
+  h2 {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 28px;
+    margin: 0px;
+    text-align: center;
+  }
+}
+@media (max-width: 960px) {
+  .superior {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 20px;
+  
+    h2 {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  
+    ion-searchbar {
+      margin-bottom: 15px;
+    }
+}
+}
+
+.btn-nuevo {
+  border: 1px solid gray;
+  border-radius: 8px;
+  color: gray;
+  font-weight: bold;
+  width: 100%;
+  height: 40px;
+  background-color: white;
+}
+
+.list-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px; /* Añade padding lateral en móviles */
+}
+
+ion-list {
+  width: 100%; /* Ocupa todo el ancho en móviles */
+  height: auto;
+  overflow-y: auto;
+  [inset] {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+ion-item {
+  font-size: 18px; /* Reduce tamaño fuente en móviles */
+  padding: 0 15px; /* Reduce padding lateral en móviles */
+  --inner-padding-end: 10px;
+}
+
+ion-icon {
+  width: 30px; /* Reduce tamaño iconos en móviles */
+  height: 30px;
+}
+
+.elipse {
+  width: 10px; /* Reduce tamaño elipse en móviles */
+  height: 10px;
+  margin-right: 8px;
+}
+
+.activo {
+  color: #95c34e;
+}
+
+.desactivo {
+  color: var(--primary-color); /* O el color que desees para inactivo */
+}
+
+.icon-action {
+  padding: 0 3px; /* Reduce padding iconos acción en móviles */
+}
+
+h2 {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.table-form,
+.location-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch; /* Estira los elementos del formulario en móviles */
+  padding: 20px;
+
+  h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px; /* Reduce tamaño título en móviles */
+  }
+
+  form {
+    width: 100%; /* Ocupa todo el ancho del formulario en móviles */
+
+    ion-item {
+      margin: 8px 0; /* Reduce margen vertical en móviles */
+      font-size: 16px; /* Reduce tamaño fuente items en móviles */
+    }
+
+    ion-label {
+      font-size: 26px; /* Reduce tamaño etiqueta en móviles */
+    }
+
+    ion-input,
+    ion-select {
+      font-size: 20px; /* Reduce tamaño input/select en móviles */
+    }
+
+    ion-select-option{
+      font-size: 20px;
+    }
+
+    ion-toggle {
+      padding: 22px 1px;    --handle-width: 25px;
+      --handle-height: 25px;
+      --handle-max-height: auto;    contain: none;
+    }  
+    ion-toggle::part(track),
+    ion-toggle.toggle-checked::part(track) {
+      height: 10px;
+      width: 50px;
+      border-radius: 3px;    background: #ddd;    overflow: visible;
+    }  
+    ion-toggle::part(handle) {
+      background: var(--primary-color);    
+      border-radius: 50%;
+      box-shadow: none;
+    }  
+    ion-toggle.toggle-checked::part(handle) {
+      background: #95C34E;
+    }
+    ion-text {
+      small {
+        font-size: 12px;
+        margin-left: 0; /* Ocupa todo el ancho en móviles */
+        display: block;
+      }
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: column; /* Apila botones en móviles */
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-save,
+    ion-button {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Estilos para pantallas más grandes (tablets y escritorios) */
+@media (min-width: 768px) {
+  .estructura {
+    flex-direction: row; /* Disposición en fila para pantallas grandes */
+    align-items: flex-start; /* Alinea las secciones al inicio verticalmente */
+  }
+
+  .estructura > div {
+    width: 50%; /* Cada sección ocupa la mitad del ancho en pantallas grandes */
+  }
+
+  .superior {
+    flex-direction: row;
+    align-items: center;
+    margin: 30px;
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 0;
+      text-align: left;
+      margin-right: 20px;
+    }
+
+    .btn-nuevo {
+      width: 120px;
+    }
+  }
+
+  .list-container {
+    padding: 0;
+  }
+
+  ion-list {
+    width: 80%;
+    height: auto; /* Ajusta la altura automáticamente en la disposición horizontal */
+  }
+
+  ion-item {
+    font-size: 24px;
+    padding: 0 40px;
+    --inner-padding-end: 24px;
+  }
+
+  ion-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .elipse {
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+  }
+
+  .icon-action {
+    padding: 0 5px;
+  }
+
+  .table-form,
+  .location-form {
+    align-items: center;
+
+    form {
+      width: 70%;
+
+      ion-item {
+        margin: 10px 0;
+      }
+
+      ion-text {
+        small {
+          margin-left: 60px;
+          display: inline-block;
+        }
+      }
+    }
+
+    .form-buttons {
+      flex-direction: row; /* Disposición horizontal de botones en pantallas grandes */
+      justify-content: flex-end;
+      gap: 15px;
+    }
+  }
+}

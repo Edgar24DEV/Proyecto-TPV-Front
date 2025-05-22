@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="restaurantName">
+      {{ restaurantName }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="6"
+        size-md="3"
+        *ngFor="let employee of listEmployees"
+      >
+        <ion-card id="present-alert" color="primary-color" (click)="presentPinModal(employee)">
+          <ion-card-header>
+            <ion-card-title>{{ employee.nombre }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
